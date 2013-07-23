@@ -1,0 +1,215 @@
+<!--***************dtable.htc*******************-->
+<method name=addnew><method/>
+<method name=del><method/>
+<method name=lighton><method/>
+<property name=nowrow><property/>
+<property name=overid><property/>
+<property name=myid><property/>
+<property name=color0><property/>
+<property name=color1><property/>
+<ATTACH EVENT="oncontentready" ONEVENT="init()" />
+<script language=javascript>
+function init()
+{
+	color0="#FFFFFF";     //行间隔色
+	color1="#FFFFFF";      //行间隔色
+	myid=0;
+	nowrow=0;
+	overid=1;
+	element.cellSpacing=1;
+	element.cellPadding=1;
+	element.border=0;
+	element.bgColor="#FFFFFF";   //边框颜色
+	element.delcolor="#FFFFFF";//删除按钮颜色
+	element.delcolorover="#FFFFFF";//删除按钮颜色
+	var baserow=element.rows[0];
+	baserow.bgColor="#FFFFFF";    //标题行底色
+	baserow.style.cursor="default";
+	lastrow=element.rows[element.rows.length-1];
+	t=element;
+	initcolor();
+//-----------------开始初始化已经存在的行----------------------
+	for (i=1;i<t.rows.length;i++)
+	{
+		//t.rows[i].style.backgroundColor=eval("color"+i%2);
+		t.rows[i].style.backgroundColor="#FFFFFF";
+		t.rows[i].attachEvent("onclick",lighton);
+		t.rows[i].style.cursor="default";
+		t.rows[i].cells[1].style.backgroundColor=element.delcolor;
+		t.rows[i].cells[1].style.cursor="hand";
+		t.rows[i].cells[1].attachEvent("onclick",delit);
+		t.rows[i].cells[1].attachEvent("onmouseover",delmouseover);
+		t.rows[i].cells[1].attachEvent("onmouseout",delmouseout);
+	}
+//------------开始备份最后一行为动态表复制元素-----------------	
+
+	t.tr_className=lastrow.className;
+	t.tr_cssText=lastrow.style.cssText;
+	t.td_count=lastrow.cells.length;
+	backupEvent("element.rows[element.rows.length-1]","TR");
+	for(i=0;i<lastrow.cells.length;i++)
+	{
+		backupEvent("element.rows[element.rows.length-1].cells["+i+"]","TD"+i);
+		t.td_cssText=lastrow.cells[i].style.cssText;
+		eval("t.td_innerHTML"+i+"=lastrow.cells[i].innerHTML");
+	}
+//-------------------------备份完成----------------------------
+
+
+}
+function delmouseover()
+{
+	ln=rowid();
+	element.rows[ln].cells[1].style.backgroundColor=element.delcolorover;
+}
+function delmouseout()
+{
+	ln=rowid();
+	element.rows[ln].cells[1].style.backgroundColor=element.delcolor;
+}
+function lighton(line)
+{
+	ln=(line==null||line=="[object]")?rowid():line;
+	row=element.rows[ln];
+	initcolor();
+	row.style.backgroundColor="#FFFFFF";
+	lightcolor(ln);
+	nowrow=ln;
+}
+function delit()
+{
+	ln=rowid();
+	if(element.rows.length!=1)
+	{
+		element.deleteRow(ln);
+		initcolor();
+	}
+}
+function del(line)
+{
+	element.deleteRow(line);
+	initcolor();
+}
+function rowid()
+{
+	row=window.event.srcElement;
+	while(row.tagName!="TR")row=row.parentElement;
+	return(row.rowIndex);
+}
+function initcolor()
+{
+	for (i=1;i<element.rows.length;i++)
+	{
+		element.rows[i].style.backgroundColor=eval("color"+i%2);
+		for(j=0;j<element.rows[i].cells.length;j++)
+		{
+			for(k=0;k<element.rows[i].cells[j].childNodes.length;k++)
+			{
+				if(element.rows[i].cells[j].childNodes[k].style!="undefined"&&element.rows[i].cells[j].childNodes[k].style!=null)
+					element.rows[i].cells[j].childNodes[k].style.backgroundColor=eval("color"+i%2);
+			}
+		}
+	}
+}
+function lightcolor(ln)
+{
+	i=ln;
+	element.rows[i].style.backgroundColor="#FFFFFF";
+	for(j=0;j<element.rows[i].cells.length;j++)
+	{
+		for(k=0;k<element.rows[i].cells[j].childNodes.length;k++)
+		{
+			if(element.rows[i].cells[j].childNodes[k].style!="undefined"&&element.rows[i].cells[j].childNodes[k].style!=null)
+				element.rows[i].cells[j].childNodes[k].style.backgroundColor="#FFFFFF";
+		}
+	}
+
+}
+function addnew(line)
+{
+	ln=(line==null||line=="[object]")?element.rows.length:line;
+	element.insertRow();
+	for(i=0;i<element.td_count;i++)
+	{
+		element.rows[ln].insertCell();
+	}
+	element.rows[ln].style.cssText=element.tr_cssText;
+	element.rows[ln].className=element.tr_className;
+	restoreEvent("element.rows["+ln+"]","TR");
+	cell=element.rows[ln].cells;
+	for(i=0;i<cell.length;i++)
+	{
+		cell[i].innerHTML=eval("element.td_innerHTML"+i);
+		cell[i].style.cssText=eval("element.td_cssText"+i);
+		restoreEvent("element.rows["+ln+"].cells["+i+"]","TD"+i);
+	}
+	initcolor();
+	t=element
+	t.rows[ln].attachEvent("onclick",lighton);
+	t.rows[ln].style.cursor="default";
+	t.rows[ln].cells[1].style.backgroundColor=element.delcolor;
+	t.rows[ln].cells[1].style.cursor="hand";
+	t.rows[ln].cells[1].attachEvent("onclick",delit);
+	t.rows[ln].cells[1].attachEvent("onmouseover",delmouseover);
+	t.rows[ln].cells[1].attachEvent("onmouseout",delmouseout);
+}
+function copyEvent(tfrom,tto,str1,str2,xxx)
+{
+	eval(tto+"."+str2+"onactivate="+tfrom+"."+str1+"onactivate");
+	eval(tto+"."+str2+"onbeforeupdate="+tfrom+"."+str1+"onbeforeupdate");
+	eval(tto+"."+str2+"onblur="+tfrom+"."+str1+"onblur");
+	eval(tto+"."+str2+"oncellchange="+tfrom+"."+str1+"oncellchange");
+	eval(tto+"."+str2+"onchange="+tfrom+"."+str1+"onchange");
+	eval(tto+"."+str2+"onclick="+tfrom+"."+str1+"onclick");
+	eval(tto+"."+str2+"oncontextmenu="+tfrom+"."+str1+"oncontextmenu");
+	eval(tto+"."+str2+"oncontrolselect="+tfrom+"."+str1+"oncontrolselect");
+	eval(tto+"."+str2+"oncopy="+tfrom+"."+str1+"oncopy");
+	eval(tto+"."+str2+"oncut="+tfrom+"."+str1+"oncut");
+	eval(tto+"."+str2+"ondblclick="+tfrom+"."+str1+"ondblclick");
+	eval(tto+"."+str2+"ondeactivate="+tfrom+"."+str1+"ondeactivate");
+	eval(tto+"."+str2+"ondrag="+tfrom+"."+str1+"ondrag");
+	eval(tto+"."+str2+"ondragend="+tfrom+"."+str1+"ondragend");
+	eval(tto+"."+str2+"ondragenter="+tfrom+"."+str1+"ondragenter");
+	eval(tto+"."+str2+"ondragleave="+tfrom+"."+str1+"ondragleave");
+	eval(tto+"."+str2+"ondragover="+tfrom+"."+str1+"ondragover");
+	eval(tto+"."+str2+"ondragstart="+tfrom+"."+str1+"ondragstart");
+	eval(tto+"."+str2+"ondrop="+tfrom+"."+str1+"ondrop");
+	eval(tto+"."+str2+"onerrorupdate="+tfrom+"."+str1+"onerrorupdate");
+	eval(tto+"."+str2+"onfilterchange="+tfrom+"."+str1+"onfilterchange");
+	eval(tto+"."+str2+"onfocus="+tfrom+"."+str1+"onfocus");
+	eval(tto+"."+str2+"onhelp="+tfrom+"."+str1+"onhelp");
+	eval(tto+"."+str2+"onkeydown="+tfrom+"."+str1+"onkeydown");
+	eval(tto+"."+str2+"onkeypress="+tfrom+"."+str1+"onkeypress");
+	eval(tto+"."+str2+"onkeyup="+tfrom+"."+str1+"onkeyup");
+	eval(tto+"."+str2+"onmousedown="+tfrom+"."+str1+"onmousedown");
+	eval(tto+"."+str2+"onmouseenter="+tfrom+"."+str1+"onmouseenter");
+	eval(tto+"."+str2+"onmouseleave="+tfrom+"."+str1+"onmouseleave");
+	eval(tto+"."+str2+"onmousemove="+tfrom+"."+str1+"onmousemove");
+	eval(tto+"."+str2+"onmouseout="+tfrom+"."+str1+"onmouseout");
+	eval(tto+"."+str2+"onmouseup="+tfrom+"."+str1+"onmouseup");
+	eval(tto+"."+str2+"onmouseover="+tfrom+"."+str1+"onmouseover");
+	eval(tto+"."+str2+"onmove="+tfrom+"."+str1+"onmove");
+	eval(tto+"."+str2+"onmoveend="+tfrom+"."+str1+"onmoveend");
+	eval(tto+"."+str2+"onmovestart="+tfrom+"."+str1+"onmovestart");
+	eval(tto+"."+str2+"onpage="+tfrom+"."+str1+"onpage");
+	eval(tto+"."+str2+"onpaste="+tfrom+"."+str1+"onpaste");
+	eval(tto+"."+str2+"onresize="+tfrom+"."+str1+"onresize");
+	eval(tto+"."+str2+"onresizeend="+tfrom+"."+str1+"onresizeend");
+	eval(tto+"."+str2+"onresizestart="+tfrom+"."+str1+"onresizestart");
+	eval(tto+"."+str2+"onrowenter="+tfrom+"."+str1+"onrowenter");
+	eval(tto+"."+str2+"onrowexit="+tfrom+"."+str1+"onrowexit");
+	eval(tto+"."+str2+"onrowsdelete="+tfrom+"."+str1+"onrowsdelete");
+	eval(tto+"."+str2+"onrowsinserted="+tfrom+"."+str1+"onrowsinserted");
+	eval(tto+"."+str2+"onscroll="+tfrom+"."+str1+"onscroll");
+	eval(tto+"."+str2+"onselect="+tfrom+"."+str1+"onselect");
+	eval(tto+"."+str2+"onselectstart="+tfrom+"."+str1+"onselectstart");
+}
+function restoreEvent(tto,str)
+{
+	copyEvent("element",tto,str,"",1);
+}
+function backupEvent(tfrom,str)
+{
+	copyEvent(tfrom,"element","",str);
+}
+</script>

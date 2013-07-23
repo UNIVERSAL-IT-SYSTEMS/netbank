@@ -1,0 +1,33 @@
+P {
+	FONT-FAMILY: '宋体'; FONT-SIZE: 9pt; MARGIN: 5px 4%
+}
+LI {
+	FONT-FAMILY: '宋体'; FONT-SIZE: 9pt; MARGIN: 5px 4%
+}
+P.doc {
+	FONT-FAMILY: '宋体'; FONT-SIZE: 9pt; MARGIN: 3px 3%
+}
+P.menu {
+	FONT-FAMILY: '宋体'; FONT-SIZE: 9pt
+}
+A {
+	COLOR: blue; CURSOR: hand; FONT-FAMILY: '宋体'; FONT-SIZE: 9pt; TEXT-DECORATION: none
+}
+A:visited {
+	COLOR: blue; TEXT-DECORATION: none
+}
+A:active {
+	COLOR: red; TEXT-DECORATION: none
+}
+A:hover {
+	COLOR: red; TEXT-DECORATION: underline
+}
+TD.title {
+	BACKGROUND-COLOR: #efe7d6; FONT-FAMILY: "宋体"; FONT-SIZE: 9pt; LINE-HEIGHT: 18pt
+}
+TD.doc {
+	BACKGROUND-COLOR: #ffffee; FONT-FAMILY: "宋体"; FONT-SIZE: 9pt; LINE-HEIGHT: 18pt; TEXT-INDENT: 18pt
+}
+TD {
+	FONT-FAMILY: "宋体"; FONT-SIZE: 9pt
+}

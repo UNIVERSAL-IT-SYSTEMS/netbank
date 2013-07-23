@@ -1,0 +1,107 @@
+TABLE {
+	FONT-SIZE: 9pt; LINE-HEIGHT: 13pt
+}
+A:link {
+	TEXT-DECORATION: none
+}
+A:visited {
+	TEXT-DECORATION: none
+}
+A:hover {
+	COLOR: #993300
+}
+
+.SectionTitle  
+{
+	font-size: 14px; 
+	font-family:Arial;
+	text-decoration: none; 
+	color: #FFFFFF;
+	background-color:#9295C0
+}
+
+.butn 	
+{
+	font-family:Tahoma; 
+	font-size :11px; 
+	font-weight :bold; 
+	background:steelblue; 
+	color :azure; 
+	cursor:hand;
+}
+
+
+.trTitle
+{
+	background-color:#D7E8F0
+}
+
+.InputTip  
+{
+	font-size: 12px; 
+	font-family:Arial;
+	text-decoration: none;	
+	color: #184973;
+	height:24;
+	background-color:#CEE7FF
+}
+
+.InputValue
+{
+	font-size: 12px; 
+	font-family:Arial;
+	text-decoration: none;	
+	color: #184973;
+	background-color:#EFF7FF
+}
+
+.pageTitle
+{
+	font-size: 12px; 
+	font-family: Arial;
+	text-decoration: none;
+	width:250;
+	height:30;
+	color: #003366;
+	vertical-align: middle;
+	background-image: url(./images/j1.gif)
+}
+
+.buttonImage
+{
+	width: 61;
+	height: 21;
+	border-style: none
+}
+
+.rateTitleTd
+{
+	font-size: 9pt;
+	text-decoration: none;	
+	color: #990000;
+	background-color:#FFFFDD
+}
+
+.rateItemTr
+{
+	background-color:#EDEEEF
+}
+
+.rateItemTr1
+{
+	background-color:#FFFFF0
+}
+
+.rateItemTd
+{
+	font-size: 9pt;
+	text-decoration: none;	
+	color: #000000
+}
+
+.rateTimeTd
+{
+	font-size: 9pt;
+	text-decoration: none;	
+	color: #0066CC
+}zz
