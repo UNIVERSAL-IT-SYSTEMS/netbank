@@ -43,8 +43,8 @@ public class Gds_PreCorfirm extends HttpServlet {
     public void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        response.setContentType("text/html;charset=utf-8");
-        request.setCharacterEncoding("utf-8");
+        response.setContentType("text/html;charset=GBK");
+        request.setCharacterEncoding("GBK");
 
         PageContext pageContext = JspFactory.getDefaultFactory()
                 .getPageContext(this, request, response, null, true,
@@ -52,7 +52,7 @@ public class Gds_PreCorfirm extends HttpServlet {
 
         GzLog gzLog = new GzLog("c:/gzLog_sj");
         String uri = request.getRequestURI();
-        String crdNo = request.getHeader("cardNo"); //银行账户
+        String crdNo = request.getParameter("cardNo"); //银行账户
         //String sjNo = request.getHeader("MBK_MOBILE");  //注册手机号码
         gzLog.Write(crdNo+"进入["+uri+"]");
 
@@ -61,8 +61,7 @@ public class Gds_PreCorfirm extends HttpServlet {
         Map gds_TCusId = new HashMap();
         Map gds_TCusNm = new HashMap();
 
-        String gds_GdsBIds = (String)pageContext
-                .getAttribute("Gds_GdsBIds", PageContext.SESSION_SCOPE);
+        String gds_GdsBIds = request.getParameter("Gds_GdsBIds");
         String[] gdsBids = gds_GdsBIds.split(",");
         Map business = GdsPubData.getSignBusiness();
         for(int i=0; i<gdsBids.length; i++){

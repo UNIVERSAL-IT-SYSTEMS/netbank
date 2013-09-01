@@ -48,17 +48,18 @@ public class Gds_Qry_9901 extends HttpServlet {
     public void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        response.setContentType("text/html;charset=utf-8");
-        request.setCharacterEncoding("utf-8");
+        response.setContentType("text/html;charset=GBK");
+        request.setCharacterEncoding("GBK");
         
         PageContext pageContext = JspFactory.getDefaultFactory()
                 .getPageContext(this, request, response, null, true,
                         8192, true);
 
         String uri = request.getRequestURI();
-        String crdNo = request.getHeader("cardNo"); //银行账户
-        //String sjNo = request.getHeader("MBK_MOBILE");  //注册手机号码
-        gzLog.Write(crdNo+"进入["+uri+"]");
+        //获取卡号
+        String cardNo = request.getParameter("cardNo");
+
+        gzLog.Write(cardNo+"进入["+uri+"]");
 
         //可以签约的交易列表
         StringBuffer signResult = new StringBuffer();
@@ -69,17 +70,16 @@ public class Gds_Qry_9901 extends HttpServlet {
             String businessKey = (String) itBusiness.next();
             String businessName = (String) business.get(businessKey);
             //只显示有勾选的类型
-            if(isSpecicalBusinessSigned(crdNo, businessKey)){
-                gzLog.Write(crdNo+"已签约"+businessName);
+            if(isSpecicalBusinessSigned(cardNo, businessKey)){
+                gzLog.Write(cardNo+"已签约"+businessName);
                 signResult.append(businessKey);
             }
         }
-        gzLog.Write(crdNo+"签约情况："+signResult.toString());
+        gzLog.Write(cardNo+"签约情况："+signResult.toString());
 
-        pageContext.setAttribute("Gds_signResult",
-                StringUtils.valueOf(signResult.toString()).trim(),
-                PageContext.SESSION_SCOPE);
-        String forwardPage = "Gds_Pub_Menu.jsp";
+
+        String forwardPage = "Gds_Pub_Menu.jsp?Gds_signResult="
+                + StringUtils.valueOf(signResult.toString()).trim();
         pageContext.forward(forwardPage);
 
     }

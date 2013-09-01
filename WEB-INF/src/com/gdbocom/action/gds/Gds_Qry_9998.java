@@ -8,6 +8,8 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.jsp.JspFactory;
+import javax.servlet.jsp.PageContext;
 
 import com.bocom.midserv.gz.GzLog;
 import com.gdbocom.util.communication.IcsServer;
@@ -43,12 +45,12 @@ public class Gds_Qry_9998 extends HttpServlet {
     public void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        response.setContentType("text/html;charset=utf-8");
-        request.setCharacterEncoding("utf-8");
+        response.setContentType("text/html;charset=GBK");
+        request.setCharacterEncoding("GBK");
 
         GzLog gzLog = new GzLog("c:/gzLog_sj");
         String uri = request.getRequestURI();
-        String crdNo = request.getHeader("cardNo"); //银行账户
+        String crdNo = request.getParameter("cardNo"); //银行账户
         //String sjNo = request.getHeader("MBK_MOBILE");  //注册手机号码
         gzLog.Write(crdNo+"进入["+uri+"]");
 
@@ -60,7 +62,7 @@ public class Gds_Qry_9998 extends HttpServlet {
         requestSt.put("FeCod", "469998");
 
         //报文体字段
-        requestSt.put("ActNo", request.getHeader("MBK_ACCOUNT"));//银行账户
+        requestSt.put("ActNo", crdNo);//银行账户
 
         Map responseMap = Transation
                 .exchangeData(IcsServer.getServer("@GDS"),
@@ -68,7 +70,7 @@ public class Gds_Qry_9998 extends HttpServlet {
                 TransationFactory.GDS469998);
 
         StringBuffer queryString = new StringBuffer();
-        queryString.append("Gds_Add_9901?")
+        queryString.append("Gds_Add_9901.jsp?")
             .append("ActNm=")
             .append(((String)responseMap.get("TCusNm")).trim())
             .append("&")
@@ -78,8 +80,11 @@ public class Gds_Qry_9998 extends HttpServlet {
             .append("IdNo=")
             .append(((String)responseMap.get("IdNo")).trim());
 
-        request.getRequestDispatcher(queryString.toString())
-            .forward(request, response);
+        PageContext pageContext = JspFactory.getDefaultFactory()
+                .getPageContext(this, request, response, null, true,
+                        8192, true);
+
+        pageContext.forward(queryString.toString());
 
     }
 

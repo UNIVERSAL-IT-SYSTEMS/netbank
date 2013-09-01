@@ -1,6 +1,6 @@
-<%@ page pageEncoding="UTF-8"%>
-<%@ page language="java" contentType="text/html; charset=UTF-8" %>
-<% request.setCharacterEncoding("UTF-8");%>
+<%@ page pageEncoding="GBK"%>
+<%@ page language="java" contentType="text/html; charset=GBK" %>
+<% request.setCharacterEncoding("GBK");%>
 
 <%@ page import="com.bocom.midserv.gz.*"%>
 <%@ page import="com.viatt.bean.*"%>
@@ -10,71 +10,110 @@
 <%@ page import="com.gdbocom.util.communication.custom.gds.*"%>
 <%
 
-    String cssFileName = request.getParameter("cssFileName");//è·å–å®¢æˆ·å½“å‰ä½¿ç”¨çš„CSSæ ·å¼
-
-    //String biz_step_id="1";  
-
-    GzLog log = new GzLog("c:/gzLog");
-    String cardNo = request.getParameter("cardNo");
     String uri = request.getRequestURI();
-    log.Write(cardNo+"è¿›å…¥["+uri+"]");
+    /* »ñÈ¡×ÜĞĞÈ«¾Ö²ÎÊı */
+    //»ñÈ¡¿Í»§µ±Ç°Ê¹ÓÃµÄCSSÑùÊ½
+    String cssFileName = request.getParameter("cssFileName");
+    //»ñÈ¡dse_sessionId
+    String dse_sessionId = request.getParameter("dse_sessionId");
+    //»ñÈ¡¿¨ºÅ
+    String cardNo = request.getParameter("cardNo");
+    //»ñÈ¡¿¨ºÅ
+    String custName = request.getParameter("custName");
 
-    String dse_sessionId = MessManTool.changeChar(request
-            .getParameter("dse_sessionId"));//è·å–dse_sessionId
+    //´´½¨ÈÕÖ¾ÊµÀı
+    com.bocom.midserv.gz.GzLog log = new com.bocom.midserv.gz.GzLog("c:/gzLog");
+    log.Write(cardNo+"½øÈë["+uri+"]");
 
 %>
 
 <html>
     <head>
-        <title>äº¤é€šé“¶è¡Œç½‘ä¸ŠæœåŠ¡</title>
+        <title>½»Í¨ÒøĞĞÍøÉÏ·şÎñ</title>
+        <!-- ×ÜĞĞÑùÊ½±í£¬¶¨Òå×ÜÌåÉ«µ÷Óë±í¸ñµÈ¸ñÊ½ -->
         <link rel="stylesheet" type="text/css" href="/personbank/css/<%=cssFileName%>">
+        <!-- ·ÖĞĞÑùÊ½±í£¬¶¨Òå¶ÎÂä¡¢³¬Á´½Ó¸ñÊ½ -->
+        <link rel="stylesheet" type="text/css"
+            href="/personbank/HttpProxy?URL=/midserv/css/css.css&dse_sessionId=<%=dse_sessionId%>">
     </head>
 
+    <body leftmargin="0" topmargin="0" marginwidth="0" marginheight="0"  oncontextmenu=self.event.returnValue=false onselectstart="return false" >
 
-    <body leftmargin="0" topmargin="0" marginwidth="0" marginheight="0"  oncontextmenu=self.event.returnValue=false onselectstart="return false">
     <div class="indent">
-        <h1>å·²å—ç†</h1><br />
+    <form action="/personbank/HttpProxy" method=post name="form1">
+        <!-- ×ÜĞĞ¶¨Òå×Ö¶Î -->
+        <input type="hidden" name="URL" value="/midserv/Gds_GdsBIds.jsp"/>
+        <input type="hidden" name="dse_sessionId" value="<%=dse_sessionId%>"/>
 <%
-    //ç‰¹è‰²éƒ¨åˆ†
-    //è·å–å·²ç­¾çº¦æ•°æ®
-    String signResult = (String)pageContext.getAttribute("Gds_signResult",
-            PageContext.SESSION_SCOPE);
-    //å¯ä»¥ç­¾çº¦çš„äº¤æ˜“åˆ—è¡¨
+	//»ñÈ¡ÒÑÇ©Ô¼Êı¾İ
+	String signResult = request.getParameter("Gds_signResult");
+%>
+        <!-- ÌØÉ«ÒµÎñ×Ö¶Î -->
+        <input type="hidden" name="Gds_signResult" value="<%=signResult%>"/>
+
+		<table width="90%" align="center" cellpadding="1" cellspacing="1" class="tab">
+<%
+    //¿ÉÒÔÇ©Ô¼µÄ½»Ò×ÁĞ±í
     Map business = GdsPubData.getSignBusiness();
     Iterator itBusiness = business.keySet().iterator();
+    if(itBusiness.hasNext()){
+%>
+        <tr align="left" class="tab_title"> 
+            <td>
+                ÒÑÊÜÀí
+            </td>
+        </tr>
+<%
+    }
+
     while (itBusiness.hasNext()) {
         String businessKey = (String) itBusiness.next();
         if (signResult.indexOf(String.valueOf(businessKey)) != -1) {
-            out.println("<p>" + business.get(businessKey)
-                    + "</p><br/>");
+%>
+        <tr class="tab_tr">
+            <td align="left">
+                <p><%=business.get(businessKey) %></p>
+            </td>
+        </tr>
+
+<%
         }
     }
 %>
-
-    <h1>è¯·é€‰æ‹©ç­¾çº¦ä¸šåŠ¡çš„ç±»å‹</h1><br />
-
-    <a href='/personbank/HttpProxy?URL=/midserv/Gds_Ele_Note.jsp&dse_sessionId=<%=dse_sessionId%>'>ç”µè´¹åˆ’æ‰£</a>
-
-    <form action="/personbank/HttpProxy" method=post name="form1">
-        <input type="hidden" name="URL" value="/midserv/Gds_GdsBIds"/>
-        <input type="hidden" name="dse_sessionId" value="<%=dse_sessionId%>"/>
+        <tr class="tab_title">
+            <td align="left">
+                ÇëÑ¡ÔñÇ©Ô¼ÒµÎñµÄÀàĞÍ
+            </td>
+        </tr>
+        <tr class="tab_tr">
+            <td align="left">
+                <p><a href='/personbank/HttpProxy?URL=/midserv/Gds_Ele_Note.jsp&dse_sessionId=<%=dse_sessionId%>'>µç·Ñ»®¿Û</a></p>
+            </td>
+        </tr>
+        <tr class="tab_tr">
+            <td align="left">
 <%
     itBusiness = business.keySet().iterator();
     while (itBusiness.hasNext()) {
         String businessKey = (String) itBusiness.next();
         if (signResult.indexOf(String.valueOf(businessKey)) < 0) {
-            out.println("<input type='checkbox' name='GdsBId"
+            out.println("<p><input type='checkbox' name='GdsBId"
                     +businessKey+"' value='"
                     +businessKey+"' >"
-                    +business.get(businessKey)+"</input><br/>");
+                    +business.get(businessKey)+"</input></p>");
         }
     }
 
  %>
-
-
-        <input type="submit"  class="button_bg"  value="ç¡®å®š" style={cursor:hand;}/>
-        <input type="button" class="button_bg" name="Submit3" value="è¿”å›" onclick="javascript:history.back()" />      
+            </td>
+        </tr>
+		<tr>
+		    <td align="center">
+		        <input type="submit"  class="button_bg"  value="È·¶¨" style={cursor:hand;}/>
+		    <input type="button" class="button_bg" name="Submit3" value="·µ»Ø" onclick="javascript:history.back()" />      
+		    </td>      
+		</tr>
+		</table>
     </form> 
     </div>
     </body>

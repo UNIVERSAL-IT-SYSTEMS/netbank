@@ -43,16 +43,17 @@ public class Gds_GdsBIds extends HttpServlet {
     public void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        response.setContentType("text/html;charset=utf-8");
-        request.setCharacterEncoding("utf-8");
+        response.setContentType("text/html;charset=GBK");
+        request.setCharacterEncoding("GBK");
 
         PageContext pageContext = JspFactory.getDefaultFactory()
                 .getPageContext(this, request, response, null, true,
                         8192, true);
 
+
         GzLog gzLog = new GzLog("c:/gzLog_sj");
         String uri = request.getRequestURI();
-        String crdNo = request.getHeader("cardNo"); //银行账户
+        String crdNo = request.getParameter("cardNo"); //银行账户
         //String sjNo = request.getHeader("MBK_MOBILE");  //注册手机号码
         gzLog.Write(crdNo+"进入["+uri+"]");
 
@@ -80,10 +81,12 @@ public class Gds_GdsBIds extends HttpServlet {
         if("".equals(gdsBIdsBuffer.toString())){
             pageContext.forward("Gds_Pub_Menu.jsp");
         }else{
-            pageContext.setAttribute("Gds_GdsBIds",
-                    gdsBIdsBuffer.toString(),
-                    PageContext.SESSION_SCOPE);
-            pageContext.forward("Gds_Spe_Data.jsp");
+//            pageContext.setAttribute("Gds_GdsBIds",
+//                    gdsBIdsBuffer.toString(),
+//                    PageContext.SESSION_SCOPE);
+            String forwardPage = "Gds_Spe_Data.jsp?Gds_GdsBIds="
+                    + gdsBIdsBuffer.toString();
+            pageContext.forward(forwardPage);
         }
     }
 

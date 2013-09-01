@@ -1,6 +1,6 @@
-<%@ page pageEncoding="UTF-8"%>
-<%@ page language="java" contentType="text/html; charset=UTF-8" %>
-<% request.setCharacterEncoding("UTF-8");%>
+<%@ page pageEncoding="GBK"%>
+<%@ page language="java" contentType="text/html; charset=GBK" %>
+<% request.setCharacterEncoding("GBK");%>
 
 <%@ page import="com.bocom.midserv.gz.*"%>
 <%@ page import="com.viatt.bean.*"%>
@@ -11,42 +11,48 @@
 <%@ page import="com.gdbocom.util.communication.custom.gds.*"%>
 <%
 
-    String cssFileName = request.getParameter("cssFileName");//èŽ·å–å®¢æˆ·å½“å‰ä½¿ç”¨çš„CSSæ ·å¼
+	String uri = request.getRequestURI();
+	/* »ñÈ¡×ÜÐÐÈ«¾Ö²ÎÊý */
+	//»ñÈ¡¿Í»§µ±Ç°Ê¹ÓÃµÄCSSÑùÊ½
+	String cssFileName = request.getParameter("cssFileName");
+	//»ñÈ¡dse_sessionId
+	String dse_sessionId = request.getParameter("dse_sessionId");
+	//»ñÈ¡¿¨ºÅ
+	String cardNo = request.getParameter("cardNo");
+	//»ñÈ¡¿¨ºÅ
+	String custName = request.getParameter("custName");
+	
+	//´´½¨ÈÕÖ¾ÊµÀý
+	com.bocom.midserv.gz.GzLog log = new com.bocom.midserv.gz.GzLog("c:/gzLog");
+	log.Write(cardNo+"½øÈë["+uri+"]");
 
-    //String biz_step_id="1";  
-
-    GzLog log = new GzLog("c:/gzLog");
-    String cardNo = request.getParameter("cardNo");
-    String uri = request.getRequestURI();
-    log.Write(cardNo+"è¿›å…¥["+uri+"]");
-
-    String dse_sessionId = MessManTool.changeChar(request
-            .getParameter("dse_sessionId"));//èŽ·å–dse_sessionId
-
-    //é‡Šæ”¾sessionå˜é‡
-    pageContext.removeAttribute("Gds_signResult", PageContext.SESSION_SCOPE);
-    pageContext.removeAttribute("Gds_GdsBIds", PageContext.SESSION_SCOPE);
-    pageContext.removeAttribute("Gds_TCusId",
-            PageContext.SESSION_SCOPE);
-    pageContext.removeAttribute("Gds_TCusNm",
-            PageContext.SESSION_SCOPE);
-
-
-    //è®¾ç½®éœ€è¦æ˜¾ç¤ºçš„å€¼å’Œåç§°,
-    String showText = "ç­¾çº¦æˆåŠŸï¼";  
 
 %>
 
 <html>
     <head>
-        <title>äº¤é€šé“¶è¡Œç½‘ä¸ŠæœåŠ¡</title>
+        <title>½»Í¨ÒøÐÐÍøÉÏ·þÎñ</title>
         <link rel="stylesheet" type="text/css" href="/personbank/css/<%=cssFileName%>">
     </head>
 
 
-    <body leftmargin="0" topmargin="0" marginwidth="0" marginheight="0"  oncontextmenu=self.event.returnValue=false onselectstart="return false">
+    <body leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" onselectstart="return false">
+    <!-- body leftmargin="0" topmargin="0" marginwidth="0" marginheight="0"  oncontextmenu=self.event.returnValue=false onselectstart="return false" -->
     <div class="indent">
-        <h1><%=showText%></h1><br/>
+    <form action="/personbank/HttpProxy" method=post name="form1">
+		<table width="90%" align="center" cellpadding="1" cellspacing="1" class="tab">
+		  <tr align="center" class="tab_title"> 
+		    <td>
+		    ÎÒÐÐÒÑÊÜÀíÄúµÄÇ©Ô¼ÉêÇë¡£
+		    </td>
+		  </tr>
+		  <tr class="tab_tr">
+		    <td align="left">
+		    ¸÷Î¯ÍÐÏîÄ¿µÄ×Ô¶¯´ú½É·ÑÒµÎñ¹¦ÄÜ×ÔÊ×´Î¿Û¿î³É¹¦Ö®ÈÕÆð¿ªÍ¨£¬ÇëÈ·±£ÄúµÄÇ©Ô¼ÒøÐÐ¿¨ÕÊ»§Óà¶î³ä×ã£¬²¢ÁôÒâÇ©Ô¼ÒøÐÐ¿¨¿Û¿î¶ÌÐÅÍ¨Öª¡£¸ÐÐ»Äú¶Ô½»ÐÐµÄÖ§³Ö!
+		    </td>
+		  </tr>
+		</table>
+    </form>
     </div>
     </body>
 </html>

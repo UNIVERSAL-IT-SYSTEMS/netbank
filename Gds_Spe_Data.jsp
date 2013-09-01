@@ -1,6 +1,6 @@
-<%@ page pageEncoding="UTF-8"%>
-<%@ page language="java" contentType="text/html; charset=UTF-8" %>
-<% request.setCharacterEncoding("UTF-8");%>
+<%@ page pageEncoding="GBK"%>
+<%@ page language="java" contentType="text/html; charset=GBK" %>
+<% request.setCharacterEncoding("GBK");%>
 
 <%@ page import="com.bocom.midserv.gz.*"%>
 <%@ page import="com.viatt.bean.*"%>
@@ -10,58 +10,97 @@
 <%@ page import="com.gdbocom.util.communication.custom.gds.*"%>
 <%
 
-    String cssFileName = request.getParameter("cssFileName");//è·å–å®¢æˆ·å½“å‰ä½¿ç”¨çš„CSSæ ·å¼
-
-    //String biz_step_id="1";  
-
-    GzLog log = new GzLog("c:/gzLog");
-    String cardNo = request.getParameter("cardNo");
-    String uri = request.getRequestURI();
-    log.Write(cardNo+"è¿›å…¥["+uri+"]");
-
-    String dse_sessionId = MessManTool.changeChar(request
-            .getParameter("dse_sessionId"));//è·å–dse_sessionId
+	String uri = request.getRequestURI();
+	/* »ñÈ¡×ÜĞĞÈ«¾Ö²ÎÊı */
+	//»ñÈ¡¿Í»§µ±Ç°Ê¹ÓÃµÄCSSÑùÊ½
+	String cssFileName = request.getParameter("cssFileName");
+	//»ñÈ¡dse_sessionId
+	String dse_sessionId = request.getParameter("dse_sessionId");
+	//»ñÈ¡¿¨ºÅ
+	String cardNo = request.getParameter("cardNo");
+	//»ñÈ¡¿¨ºÅ
+	String custName = request.getParameter("custName");
+	
+	//´´½¨ÈÕÖ¾ÊµÀı
+	com.bocom.midserv.gz.GzLog log = new com.bocom.midserv.gz.GzLog("c:/gzLog");
+	log.Write(cardNo+"½øÈë["+uri+"]");
 
 %>
 
 <html>
     <head>
-        <title>äº¤é€šé“¶è¡Œç½‘ä¸ŠæœåŠ¡</title>
+        <title>½»Í¨ÒøĞĞÍøÉÏ·şÎñ</title>
         <link rel="stylesheet" type="text/css" href="/personbank/css/<%=cssFileName%>">
     </head>
 
 
-    <body leftmargin="0" topmargin="0" marginwidth="0" marginheight="0"  oncontextmenu=self.event.returnValue=false onselectstart="return false">
+    <body leftmargin="0" topmargin="0" marginwidth="0" marginheight="0"  oncontextmenu=self.event.returnValue=false onselectstart="return false" >
     <div class="indent">
-        <h1>å·²å—ç†</h1><br />
     <form action="/personbank/HttpProxy" method=post name="form1">
-        <input type="hidden" name="URL" value="/midserv/Gds_PreCorfirm"/>
+        <!-- ×ÜĞĞ¶¨Òå×Ö¶Î -->
+        <input type="hidden" name="URL" value="/midserv/Gds_Pub_Confirm.jsp"/>
         <input type="hidden" name="dse_sessionId" value="<%=dse_sessionId%>"/>
+
 <%
-    String gds_GdsBIds = (String)pageContext
-            .getAttribute("Gds_GdsBIds", PageContext.SESSION_SCOPE);
-    String[] gdsBids = gds_GdsBIds.split(",");
+    //»ñÈ¡ÒÑÇ©Ô¼Êı¾İ
+    String signResult = request.getParameter("Gds_signResult");
+    String Gds_GdsBIds = request.getParameter("Gds_GdsBIds");
+
+%>
+        <!-- ÌØÉ«ÒµÎñ×Ö¶Î -->
+        <input type="hidden" name="Gds_signResult" value="<%=signResult%>"/>
+        <input type="hidden" name="Gds_GdsBIds" value="<%=Gds_GdsBIds%>"/>
+
+	<table width="90%" align="center" cellpadding="1" cellspacing="1" class="tab">
+	  <tr align="center" class="tab_title"> 
+	    <td colspan="2">
+        ÒÑÊÜÀí
+	    </td>
+	  </tr>
+<%
+    String[] gdsBids = Gds_GdsBIds.split(",");
     Map business = GdsPubData.getSignBusiness();
     for(int i=0; i<gdsBids.length; i++){
         if( null!=gdsBids[i] && (!"".equals(gdsBids[i])) ){
             String businessId = gdsBids[i];
             String businessName = (String) business.get(businessId);
-
-            out.println("<h1>"+businessName+"ï¼š</h1><br/>");
-            out.println("<h2>è¯·è¾“å…¥"+businessName+"ç¼´è´¹å·:</h2><br/>");
-            out.println("<input type='text' name='TCusId"+businessId
-                    +"' /><br/>");
-            out.println("<h2>è¯·è¾“å…¥"+businessName+"ç¼´è´¹æˆ·å:</h2><br/>");
-            out.println("<input type='text' name='TCusNm"+businessId
-                    +"' /><br/>");
-            out.println("<br/>");
+%>
+	  <tr align="center" class="tab_sub_title"> 
+	    <td colspan="2">
+	    <%=businessName %>
+	    </td>
+	  </tr>
+      <tr class="tab_tr"> 
+        <td align="right" width="50%">
+        <%="ÇëÊäÈë"+businessName+"½É·ÑºÅ:" %>
+        </td>
+        <td align="left" width="50%">
+        <input type='text' name='TCusId<%=businessId %>' />
+        </td>
+      </tr>
+      <tr class="tab_tr"> 
+        <td align="right">
+        <%="ÇëÊäÈë"+businessName+"½É·Ñ»§Ãû:" %>
+        </td>
+        <td align="left">
+        <input type='text' name='TCusNm<%=businessId %>' />
+        </td>
+      </tr>
+<%
         }
     }
-
-
 %>
-        <input type="submit"  class="button_bg"  value="ç¡®å®š" style={cursor:hand;}/>
-        <input type="button" class="button_bg" name="Submit3" value="è¿”å›" onclick="javascript:history.back()" />      
+
+	  <tr>
+      <tr class="tab_tr"> 
+        <td align="right">
+            <input type="submit"  class="button_bg"  value="È·¶¨" style={cursor:hand;}/>
+        </td>
+        <td align="left">
+            <input type="button" class="button_bg" name="Submit3" value="·µ»Ø" onclick="javascript:history.back()" />      
+        </td>
+      </tr>
+	</table>
     </form> 
     </div>
     </body>

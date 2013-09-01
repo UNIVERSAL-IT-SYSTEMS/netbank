@@ -50,11 +50,11 @@ public class Gds_Add_9901 extends HttpServlet {
     public void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        response.setContentType("text/html;charset=utf-8");
-        request.setCharacterEncoding("utf-8");
+        response.setContentType("text/html;charset=GBK");
+        request.setCharacterEncoding("GBK");
         
         String uri = request.getRequestURI();
-        String crdNo = request.getHeader("cardNo"); //银行账户
+        String crdNo = request.getParameter("cardNo"); //银行账户
         //String sjNo = request.getHeader("MBK_MOBILE");  //注册手机号码
         gzLog.Write(crdNo+"进入["+uri+"]");
 
@@ -62,8 +62,8 @@ public class Gds_Add_9901 extends HttpServlet {
         PageContext pageContext = JspFactory.getDefaultFactory()
                 .getPageContext(this, request, response, null, true,
                         8192, true);
-        String gds_GdsBIds = (String)pageContext
-                .getAttribute("Gds_GdsBIds", PageContext.SESSION_SCOPE);
+
+        String gds_GdsBIds = request.getParameter("Gds_GdsBIds");
         String[] gdsBids = gds_GdsBIds.split(",");
         Map business = GdsPubData.getSignBusiness();
         for(int i=0; i<gdsBids.length; i++){
@@ -72,13 +72,13 @@ public class Gds_Add_9901 extends HttpServlet {
                 String businessName = (String) business.get(businessId);
 
                 gzLog.Write("发送"+businessName+"签约交易");
-                signSpecicalBusiness(pageContext, request, businessId);
+                signSpecicalBusiness(request, businessId);
 
             }
         }
 
 
-        response.sendRedirect("Gds_Pub_Suc.jsp");
+        pageContext.forward("Gds_Pub_Suc.jsp");
 
     }
 
@@ -87,7 +87,7 @@ public class Gds_Add_9901 extends HttpServlet {
      * @throws UnknownHostException
      * @throws IOException
      */
-    private void signSpecicalBusiness(PageContext pageContext,
+    private void signSpecicalBusiness(
             HttpServletRequest request,
             String businessType)
             throws UnknownHostException, IOException {
@@ -102,13 +102,13 @@ public class Gds_Add_9901 extends HttpServlet {
         // 报文体GdsPub字段
         requestSt.put("Func", GdsPubData.functionAdd);
         requestSt.put("GdsBId", businessType);
-        requestSt.put("ActNo", request.getHeader("cardNo"));
+        requestSt.put("ActNo", (String)request.getParameter("cardNo"));
         requestSt.put("ActNm", (String)request.getParameter("ActNm"));
         requestSt.put("BCusNo", (String)request.getParameter("BCusNo"));
         requestSt.put("BCusId", "");
         requestSt.put("IdNo", (String)request.getParameter("IdNo"));
-        requestSt.put("MobTyp", GdsPubData.contactMobile);
-        requestSt.put("MobTel", (String)request.getParameter("MBK_MOBILE"));// TODO
+        requestSt.put("MobTyp", "");
+        requestSt.put("MobTel", "");
         requestSt.put("EMail", "");
         requestSt.put("Addr", "");
 
@@ -117,20 +117,14 @@ public class Gds_Add_9901 extends HttpServlet {
         requestSt.put("BnkNo", GdsPubData.bankNo);
         requestSt.put("OrgCod", GdsPubData.getBCusId().get(businessType));
         requestSt.put("TBusTp", GdsPubData.getTBusTp().get(businessType));
-        String TCusId = (String)((Map)pageContext
-                .getAttribute("Gds_TCusId", PageContext.SESSION_SCOPE))
-                .get(businessType);
-        requestSt.put("TCusId", TCusId);
-        String TCusNm = (String)((Map)pageContext
-                .getAttribute("Gds_TCusNm", PageContext.SESSION_SCOPE))
-                .get(businessType);
-        requestSt.put("TCusNm", TCusNm);
+        requestSt.put("TCusId", (String)request.getParameter("TCusId"+businessType));
+        requestSt.put("TCusNm", (String)request.getParameter("TCusNm"+businessType));
         StringBuffer gdsAId = new StringBuffer().append("01")
                 .append("5810")
                 .append(GdsPubData.getBCusId().get(businessType))
                 .append(GdsPubData.getTBusTp().get(businessType))
                 .append("301")
-                .append((String)request.getHeader("MBK_ACCOUNT"));
+                .append((String)request.getParameter("cardNo"));
         requestSt.put("GdsAId", gdsAId.toString());
 
         SimpleDateFormat sf = new SimpleDateFormat("yyyyMMdd");
