@@ -63,17 +63,31 @@
 	String[] gdsBids = gds_GdsBIds.split(",");
 	Map business = GdsPubData.getSignBusiness();
 	for(int i=0; i<gdsBids.length; i++){
-	    if( null!=gdsBids[i] && (!"".equals(gdsBids[i])) ){
-	        String businessId = gdsBids[i];
-	        String businessName = (String) business.get(businessId);
-	
-	        String tCusId = request.getParameter("TCusId"+businessId);
-	        String tCusNm = request.getParameter("TCusNm"+businessId);
+        if( null==gdsBids[i] || ("".equals(gdsBids[i])) ){
+            continue;
+        }
+
+        String businessId = gdsBids[i];
+        String businessName = (String) business.get(businessId);
+        if(businessId.equals(GdsPubData.businessOfMobile)){
+            String tAgtTp = request.getParameter("TAgtTp"+businessId);
+            String mCusId = request.getParameter("MCusId"+businessId);
+            String tCusId = request.getParameter("TCusId"+businessId);
+%>
+        <input type='hidden' name='TAgtTp<%=businessId %>' value="<%=tAgtTp%>" />
+        <input type='hidden' name='MCusId<%=businessId %>' value="<%=mCusId%>" />
+        <input type='hidden' name='TCusId<%=businessId %>' value="<%=tCusId%>" />
+
+<%
+
+        }else{
+            String tCusId = request.getParameter("TCusId"+businessId);
+            String tCusNm = request.getParameter("TCusNm"+businessId);
 %>
          <input type="hidden" name="TCusId<%=businessId %>" value="<%=tCusId%>"/>
          <input type="hidden" name="TCusNm<%=businessId %>" value="<%=tCusNm%>"/>
 <%
-	    }
+        }
 	}
 
 %>
@@ -93,10 +107,50 @@
 	      </tr>
 <%
     for(int i=0; i<gdsBids.length; i++){
-        if( null!=gdsBids[i] && (!"".equals(gdsBids[i])) ){
-            String businessId = gdsBids[i];
-            String businessName = (String) business.get(businessId);
-    
+        if( null==gdsBids[i] || ("".equals(gdsBids[i])) ){
+            continue;
+        }
+
+        String businessId = gdsBids[i];
+        String businessName = (String) business.get(businessId);
+        if(businessId.equals(GdsPubData.businessOfMobile)){
+            String tAgtTp = request.getParameter("TAgtTp"+businessId);
+            String mCusId = request.getParameter("MCusId"+businessId);
+            String tCusId = request.getParameter("TCusId"+businessId);
+%>
+          <tr align="center" class="tab_sub_title"> 
+            <td colspan="2">
+            <%=businessName %>划扣:
+            </td>
+          </tr>
+          <tr class="tab_tr"> 
+            <td align="right" width="50%">
+            签约类型:
+            </td>
+            <td align="left" width="50%">
+            <%=tAgtTp.equals("1")?"主号签约":"副号签约" %>
+            </td>
+          </tr>
+          <tr class="tab_tr"> 
+            <td align="right" width="50%">
+            主号:
+            </td>
+            <td align="left" width="50%">
+            <%=mCusId %>
+            </td>
+          </tr>
+          <tr class="tab_tr"> 
+            <td align="right" width="50%">
+            副号:
+            </td>
+            <td align="left" width="50%">
+            <%=tCusId %>
+            </td>
+          </tr>
+
+<%
+
+        }else{
             String tCusId = request.getParameter("TCusId"+businessId);
             String tCusNm = request.getParameter("TCusNm"+businessId);
 %>
@@ -122,7 +176,9 @@
             </td>
           </tr>
 <%
+
         }
+
     }
 %>
       <tr class="tab_tr"> 

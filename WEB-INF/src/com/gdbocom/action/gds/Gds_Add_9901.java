@@ -72,7 +72,7 @@ public class Gds_Add_9901 extends HttpServlet {
                 String businessName = (String) business.get(businessId);
 
                 gzLog.Write("发送"+businessName+"签约交易");
-                signSpecicalBusiness(request, businessId);
+                signBusiness(request, businessId);
 
             }
         }
@@ -87,12 +87,76 @@ public class Gds_Add_9901 extends HttpServlet {
      * @throws UnknownHostException
      * @throws IOException
      */
-    private void signSpecicalBusiness(
+    private void signBusiness(
             HttpServletRequest request,
             String businessType)
             throws UnknownHostException, IOException {
 
-        
+        if(GdsPubData.businessOfMobile.equals(businessType)){
+            sigeMobileBusiness(request, businessType);
+        }else{
+            sigeNormalBusiness(request, businessType);
+        }
+    }
+
+    /**
+     * @param request
+     * @param businessType
+     * @throws UnknownHostException
+     * @throws IOException
+     */
+    private void sigeMobileBusiness(HttpServletRequest request, String businessType)
+            throws UnknownHostException, IOException {
+        //配置发送参数
+        Map requestSt = new HashMap();
+        // 报文头字段
+        requestSt.put("TTxnCd", "469901");
+        requestSt.put("FeCod", "469901");
+
+        // 报文体GdsPub字段
+        requestSt.put("Func", GdsPubData.functionAdd);
+        requestSt.put("GdsBId", businessType);
+        requestSt.put("ActNo", (String)request.getParameter("cardNo"));
+        requestSt.put("ActNm", (String)request.getParameter("ActNm"));
+        requestSt.put("BCusNo", (String)request.getParameter("BCusNo"));
+        requestSt.put("BCusId", "");
+        requestSt.put("IdNo", (String)request.getParameter("IdNo"));
+        requestSt.put("MobTyp", "");
+        requestSt.put("MobTel", "");
+        requestSt.put("EMail", "");
+        requestSt.put("Addr", "");
+
+
+        // 特殊字段
+        requestSt.put("BnkNo", GdsPubData.bankNo);
+        requestSt.put("OrgCod", GdsPubData.getBCusId().get(businessType));
+        requestSt.put("TBusTp", GdsPubData.getTBusTp().get(businessType));
+        requestSt.put("TAgtTp", (String)request.getParameter("TAgtTp"+businessType));
+        requestSt.put("MCusId", (String)request.getParameter("MCusId"+businessType));
+        requestSt.put("TCusId", (String)request.getParameter("TCusId"+businessType));
+        StringBuffer gdsAId = new StringBuffer().append("01")
+                .append("5810")
+                .append(GdsPubData.getBCusId().get(businessType))
+                .append(GdsPubData.getTBusTp().get(businessType))
+                .append("301")
+                .append((String)request.getParameter("cardNo"));
+        requestSt.put("GdsAId", gdsAId.toString());
+
+        SimpleDateFormat sf = new SimpleDateFormat("yyyyMMdd");
+        requestSt.put("EffDat", sf.format(new Date()));
+
+        Transation.exchangeData(IcsServer.getServer("@GDS"),
+                requestSt, TransationFactory.GDS469901);
+    }
+
+    /**
+     * @param request
+     * @param businessType
+     * @throws UnknownHostException
+     * @throws IOException
+     */
+    private void sigeNormalBusiness(HttpServletRequest request, String businessType)
+            throws UnknownHostException, IOException {
         //配置发送参数
         Map requestSt = new HashMap();
         // 报文头字段

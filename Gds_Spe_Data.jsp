@@ -61,15 +61,53 @@
     String[] gdsBids = Gds_GdsBIds.split(",");
     Map business = GdsPubData.getSignBusiness();
     for(int i=0; i<gdsBids.length; i++){
-        if( null!=gdsBids[i] && (!"".equals(gdsBids[i])) ){
-            String businessId = gdsBids[i];
-            String businessName = (String) business.get(businessId);
+        if( null==gdsBids[i] || ("".equals(gdsBids[i])) ){
+            continue;
+        }
+
+        String businessId = gdsBids[i];
+        String businessName = (String) business.get(businessId);
+        if(businessId.equals(GdsPubData.businessOfMobile)){
 %>
-	  <tr align="center" class="tab_sub_title"> 
-	    <td colspan="2">
-	    <%=businessName %>
-	    </td>
-	  </tr>
+      <tr align="center" class="tab_sub_title"> 
+        <td colspan="2">
+        <%=businessName %>
+        </td>
+      </tr>
+      <tr class="tab_tr"> 
+        <td align="right" width="50%">
+        <%="请选择签约类型:" %>
+        </td>
+        <td align="left" width="50%">
+        <input type='radio' name='TAgtTp<%=businessId %>' value='1' >主号签约</input>
+        <input type='radio' name='TAgtTp<%=businessId %>' value='2' >副号签约</input>
+        </td>
+      </tr>
+      <tr class="tab_tr"> 
+        <td align="right" width="50%">
+        <%="请输入"+businessName+"主号:" %>
+        </td>
+        <td align="left" width="50%">
+        <input type='text' name='MCusId<%=businessId %>' />
+        </td>
+      </tr>
+      <tr class="tab_tr"> 
+        <td align="right">
+        <%="请输入"+businessName+"副号:" %>
+        </td>
+        <td align="left">
+        <input type='text' name='TCusId<%=businessId %>' />
+        </td>
+      </tr>
+<%
+
+        }else{
+%>
+      <tr align="center" class="tab_sub_title"> 
+        <td colspan="2">
+        <%=businessName %>
+        </td>
+      </tr>
       <tr class="tab_tr"> 
         <td align="right" width="50%">
         <%="请输入"+businessName+"缴费号:" %>
