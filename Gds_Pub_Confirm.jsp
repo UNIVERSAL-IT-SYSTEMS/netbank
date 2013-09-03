@@ -38,10 +38,25 @@
     <head>
         <title>交通银行网上服务</title>
         <link rel="stylesheet" type="text/css" href="/personbank/css/<%=cssFileName%>">
+
+        <!--引用总行端公用安全组件，不需要引用HttpProxy-->
+		<script language="JavaScript" src="/personbank/js/public.js"></script>
+		<script language=JavaScript src="/personbank/js/writeActivxObject.js"></script>
+		<script language="JavaScript">
+			function beforeSubmit(){
+				if(document.safeInput1.allType()!="10000"
+						|| document.safeInput1.isValid()){
+	                alert("请输入合法的密码");
+	                return;
+				}
+				document.forms["form1"].submit();
+			}
+		</script>
     </head>
 
 
     <body leftmargin="0" topmargin="0" marginwidth="0" marginheight="0"  oncontextmenu=self.event.returnValue=false onselectstart="return false" >
+    <SCRIPT language=JavaScript> writeCommitActivxObject('')</SCRIPT>
     <div class="indent">
     <form action="/personbank/HttpProxy" method=post name="form1">
         <!-- 总行定义字段 -->
@@ -186,12 +201,12 @@
             请输入交易密码：
         </td>
         <td align="left">
-            <input type="password" name="Submit3" />
+<SCRIPT language=JavaScript> writePwdActivxObjectLenClass('safeInput1','safeInput1','','password',20,6,'20','153')</SCRIPT>
         </td>
       </tr>
       <tr class="tab_tr"> 
         <td align="right">
-            <input type="submit"  class="button_bg"  value="确定" style={cursor:hand;}/>
+            <input type="button" class="button_bg" onclick="javascript:beforeSubmit();" value="提交" style={cursor:hand;}>
         </td>
         <td align="left">
             <input type="button" class="button_bg" name="Submit3" value="返回" onclick="javascript:history.back()" />      
