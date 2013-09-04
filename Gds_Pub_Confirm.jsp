@@ -204,7 +204,7 @@
 <SCRIPT language=JavaScript> writePwdActivxObjectLenClass('safeInput1','safeInput1','','password',20,6,'20','153')</SCRIPT>
         </td>
       </tr>
-      <tr class="tab_tr"> 
+      <tr class="tab_result"> 
         <td align="right">
             <input type="button" class="button_bg" onclick="javascript:beforeSubmit();" value="Ìá½»" style={cursor:hand;}>
         </td>

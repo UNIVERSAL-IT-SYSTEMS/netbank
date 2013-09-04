@@ -130,7 +130,7 @@
 %>
 
 	  <tr>
-      <tr class="tab_tr"> 
+      <tr class="tab_result"> 
         <td align="right">
             <input type="submit"  class="button_bg"  value="È·¶¨" style={cursor:hand;}/>
         </td>

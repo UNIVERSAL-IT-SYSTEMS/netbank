@@ -107,10 +107,10 @@
  %>
             </td>
         </tr>
-		<tr>
+		<tr class="tab_result">
 		    <td align="center">
 		        <input type="submit"  class="button_bg"  value="确定" style={cursor:hand;}/>
-		    <input type="button" class="button_bg" name="Submit3" value="返回" onclick="javascript:history.back()" />      
+		        <input type="button" class="button_bg" name="Submit3" value="返回" onclick="javascript:history.back()" />      
 		    </td>      
 		</tr>
 		</table>

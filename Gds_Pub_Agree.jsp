@@ -70,7 +70,7 @@
                 <tr class="tab_tr">
                     <td align="left"><p>本人已阅读并同意遵守《缴费通业务委托约定》条款。</p></td>
                 </tr>
-                <tr>
+                <tr class="tab_result">
                     <td align="center">
 			            <input type="submit"  class="button_bg"  value="同意" style={cursor:hand;}/>
 			            <input type="button" class="button_bg" name="Submit3" value="返回" onclick="javascript:history.back()" />      
