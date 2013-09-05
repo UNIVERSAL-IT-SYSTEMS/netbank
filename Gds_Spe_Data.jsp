@@ -46,7 +46,12 @@
     String signResult = request.getParameter("Gds_signResult");
     String Gds_GdsBIds = request.getParameter("Gds_GdsBIds");
 
+    //设置注册版手机银行字段
+    String loginType = request.getParameter("loginType");
 %>
+        <!-- 发送手机动态密码字段 -->
+        <input type="hidden" name="sendPass" value="1"/>
+
         <!-- 特色业务字段 -->
         <input type="hidden" name="Gds_signResult" value="<%=signResult%>"/>
         <input type="hidden" name="Gds_GdsBIds" value="<%=Gds_GdsBIds%>"/>
@@ -58,6 +63,7 @@
 	    </td>
 	  </tr>
 <%
+
     String[] gdsBids = Gds_GdsBIds.split(",");
     Map business = GdsPubData.getSignBusiness();
     for(int i=0; i<gdsBids.length; i++){

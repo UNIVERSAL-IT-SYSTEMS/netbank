@@ -26,11 +26,14 @@
 	com.bocom.midserv.gz.GzLog log = new com.bocom.midserv.gz.GzLog("c:/gzLog");
 	log.Write(cardNo+"进入["+uri+"]");
 
-    //设置需要显示的值和名称
-    boolean isNull = false;
-    //设置需要显示的值、名称和来源，
-    //    格式：CrdNo,签约卡号,[reqHead|request|session]
-    //String showKey = request.getParameter("showKey");
+    //手机动态密码字段
+    String sendPass = request.getParameter("sendPass");
+    if(!("0".equals(sendPass)||"1".equals(sendPass))){
+        response.sendRedirect("Gds_Pub_Agree.jsp");
+    }
+    String dynamicCode = request.getParameter("dynamicCode");
+    String dynamicCodeSeq = request.getParameter("dynamicCodeSeq");
+    log.Write( "sendPass=["+sendPass+"] 动态密码=["+dynamicCode+"] 动态密码序号=["+dynamicCodeSeq+"]" );
 
 %>
 
@@ -49,6 +52,11 @@
 	                alert("请输入合法的密码");
 	                return;
 				}
+                if(document.form1.DynamicCode.value
+                		!='<%=request.getParameter("dynamicCode")%>'){
+                    alert('动态密码不符');
+                    return false;
+                }
 				document.forms["form1"].submit();
 			}
 		</script>
@@ -202,6 +210,14 @@
         </td>
         <td align="left">
 <SCRIPT language=JavaScript> writePwdActivxObjectLenClass('safeInput1','safeInput1','','password',20,6,'20','153')</SCRIPT>
+        </td>
+      </tr>
+      <tr class="tab_tr"> 
+        <td align="right">
+            请输入手机动态密码：
+        </td>
+        <td align="left">
+            <input type="text" name="DynamicCode">序号：（<%=dynamicCodeSeq %>）
         </td>
       </tr>
       <tr class="tab_result"> 

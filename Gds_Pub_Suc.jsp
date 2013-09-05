@@ -36,8 +36,7 @@
     </head>
 
 
-    <body leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" onselectstart="return false">
-    <!-- body leftmargin="0" topmargin="0" marginwidth="0" marginheight="0"  oncontextmenu=self.event.returnValue=false onselectstart="return false" -->
+    <body leftmargin="0" topmargin="0" marginwidth="0" marginheight="0"  oncontextmenu=self.event.returnValue=false onselectstart="return false" >
     <div class="indent">
     <form action="/personbank/HttpProxy" method=post name="form1">
 		<table width="90%" align="center" cellpadding="1" cellspacing="1" class="tab">

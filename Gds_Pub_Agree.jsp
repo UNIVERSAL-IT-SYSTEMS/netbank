@@ -40,7 +40,7 @@
 
     <body leftmargin="0" topmargin="0" marginwidth="0" marginheight="0"  oncontextmenu=self.event.returnValue=false onselectstart="return false">
     <div class="indent">
-        <form action="/personbank/HttpProxy" method=post name="form1">      
+        <form action="/personbank/HttpProxy" method=post name="form1">
             <input type="hidden" name="URL" value="/midserv/Gds_Qry_9901.jsp"/>
             <input type="hidden" name="dse_sessionId" value="<%=dse_sessionId%>"/>
 
