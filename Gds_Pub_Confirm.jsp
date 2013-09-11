@@ -143,7 +143,7 @@
 %>
           <tr align="center" class="tab_sub_title"> 
             <td colspan="2">
-            <%=businessName %>ЛЎПл:
+            <%=businessName %>:
             </td>
           </tr>
           <tr class="tab_tr"> 
@@ -179,7 +179,7 @@
 %>
           <tr align="center" class="tab_sub_title"> 
             <td colspan="2">
-            <%=businessName %>ЛЎПл:
+            <%=businessName %>:
             </td>
           </tr>
           <tr class="tab_tr"> 
