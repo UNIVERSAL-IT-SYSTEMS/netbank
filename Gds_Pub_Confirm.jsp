@@ -46,18 +46,24 @@
 		<script language="JavaScript" src="/personbank/js/public.js"></script>
 		<script language=JavaScript src="/personbank/js/writeActivxObject.js"></script>
 		<script language="JavaScript">
+		   var clickBoolean=true;
 			function beforeSubmit(){
-				if(document.safeInput1.allType()!="10000"
-						|| document.safeInput1.isValid()){
-	                alert("请输入合法的密码");
-	                return;
-				}
-                if(document.form1.DynamicCode.value
-                		!='<%=request.getParameter("dynamicCode")%>'){
-                    alert('动态密码不符');
-                    return false;
-                }
-				document.forms["form1"].submit();
+	            if(clickBoolean){
+	                if(document.safeInput1.allType()!="10000"
+                        || document.safeInput1.isValid()){
+	                    alert("请输入合法的密码");
+	                    return;
+	                }
+	                if(document.form1.DynamicCode.value
+	                        !='<%=request.getParameter("dynamicCode")%>'){
+	                    alert('动态密码不符');
+	                    return false;
+	                }
+
+	                document.safeInput1.commit("safeCommit1");
+	                document.safeCommit1.submit("form1"); 
+	                clickBoolean=false;
+	            }
 			}
 		</script>
     </head>
@@ -80,6 +86,7 @@
         <!-- 特色业务字段 -->
         <input type="hidden" name="Gds_signResult" value="<%=signResult%>"/>
         <input type="hidden" name="Gds_GdsBIds" value="<%=Gds_GdsBIds%>"/>
+        <input type="hidden" name="password"/>
 
 <%
 	String gds_GdsBIds = request.getParameter("Gds_GdsBIds");

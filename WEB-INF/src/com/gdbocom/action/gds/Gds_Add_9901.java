@@ -125,6 +125,7 @@ public class Gds_Add_9901 extends HttpServlet {
         requestSt.put("MobTel", "");
         requestSt.put("EMail", "");
         requestSt.put("Addr", "");
+        requestSt.put("Pin", (String)request.getParameter("password"));
 
 
         // ÌØÊâ×Ö¶Î
@@ -175,6 +176,7 @@ public class Gds_Add_9901 extends HttpServlet {
         requestSt.put("MobTel", "");
         requestSt.put("EMail", "");
         requestSt.put("Addr", "");
+        requestSt.put("Pin", (String)request.getParameter("password"));
 
 
         // ÌØÊâ×Ö¶Î

@@ -54,7 +54,6 @@ public class Gds_Qry_9998 extends HttpServlet {
         //String sjNo = request.getHeader("MBK_MOBILE");  //注册手机号码
         gzLog.Write(crdNo+"进入["+uri+"]");
 
-
         //配置发送参数
         Map requestSt = new HashMap();
         //报文头字段
