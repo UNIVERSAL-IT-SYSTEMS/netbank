@@ -51,7 +51,7 @@ public class Gds_GdsBIds extends HttpServlet {
                         8192, true);
 
 
-        GzLog gzLog = new GzLog("c:/gzLog_sj");
+        GzLog gzLog = new GzLog("c:/gzLog");
         String uri = request.getRequestURI();
         String crdNo = request.getParameter("cardNo"); //银行账户
         //String sjNo = request.getHeader("MBK_MOBILE");  //注册手机号码

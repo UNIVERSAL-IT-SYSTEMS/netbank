@@ -29,7 +29,7 @@ public class Gds_Add_9901 extends HttpServlet {
      */
     private static final long serialVersionUID = 1L;
 
-    private GzLog gzLog = new GzLog("c:/gzLog_sj");
+    private GzLog gzLog = new GzLog("c:/gzLog");
 
     public Gds_Add_9901() {
         super();

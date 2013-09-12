@@ -23,7 +23,7 @@
 	String custName = request.getParameter("custName");
 	
 	//创建日志实例
-	com.bocom.midserv.gz.GzLog log = new com.bocom.midserv.gz.GzLog("c:/gzLog");
+    com.bocom.midserv.gz.GzLog log = new com.bocom.midserv.gz.GzLog("c:/gzLog");
 	log.Write(cardNo+"进入["+uri+"]");
 
     //手机动态密码字段
