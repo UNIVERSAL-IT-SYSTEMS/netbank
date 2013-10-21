@@ -47,7 +47,7 @@
 		
 					
 					
-					<form action="/personbank/HttpProxy" method=post name="f1">
+					<FORM action="/personbank/HttpProxy" method=post name="f1">
 					<input type="hidden"   name="dse_sessionId"	value="<%=dse_sessionId%>">
 					<input type="hidden"   name="URL"           value="/midserv/yiDongCharge2.jsp">
 					<input type="hidden"   name=biz_id          value="<%=biz_id %>">
@@ -77,7 +77,7 @@
 					</tr>
 					</table>
 					
-				</form>
+				</FORM>
 				
 			</DIV>
 		</center>

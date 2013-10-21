@@ -1,98 +1,176 @@
-<%@ page pageEncoding="UTF-8"%>
-<%@ page language="java" contentType="text/html; charset=UTF-8" %>
-<% request.setCharacterEncoding("UTF-8");%>
+<!-------------------------------------------------------------------
+                          ±ê×¼Ò³Ãæ·şÎñ¶ÔÏóÒıÓÃ
+-------------------------------------------------------------------->
+<%@ page language="java" contentType="text/html;charset=GBK" %>
 
-
-<%@ page import="java.util.*"%>
-<%@ page import="com.bocom.midserv.gz.*"%>
+<%@ page import="java.util.Date" %>
 <%@ page import="com.viatt.bean.*"%>
-<%@ page import="com.viatt.util.*"%>
-
-
+<%@ page import="com.viatt.util.*" %>
+<%@ page import="com.bocom.midserv.base.*" %>
+<%@ page import="com.bocom.midserv.web.*" %>
+<%@ page import="com.bocom.midserv.gz.*"%>
 <%
-	String cssFileName = request.getParameter("cssFileName");//è·å–å®¢æˆ·å½“å‰ä½¿ç”¨çš„CSSæ ·å¼
-
-
-	String cdno = request.getParameter("cardNo");
 	GzLog log = new GzLog("c:/gzLog");
-	log.Write("============== ç”µåŠ›ç¼´è´¹çš„ç¬¬3ä¸ªjspæ–‡ä»¶========begin========================");
-	String dse_sessionId = MessManTool.changeChar(request.getParameter("dse_sessionId"));//è·å–dse_sessionId
-	String biz_id = MessManTool.changeChar(request.getParameter("biz_id")); 
-	if (biz_id.equals("") ) {
-		System.out.println("ä¼ å…¥å‚æ•°ä¸æ­£ç¡®");
+	log.Write("/n===========dianLiJiaoFei3.jsp====begin========================");
+	
+	String loginType = request.getParameter("loginType");//´«ËÍµÇÂ½Àà±ğ 0£­×¢²áÓÃ»§(ÊÖ»ú°æ) 1£­Ö¤ÊéÓÃ»§ 2£­´óÖÚÓÃ»§
+	String dse_sessionId = MessManTool.changeChar(request.getParameter("dse_sessionId"));//»ñÈ¡dse_sessionId
+	String step_id = MessManTool.changeChar(request.getParameter("step_id"));
+	String biz_id = MessManTool.changeChar(request.getParameter("biz_id"));
+	String displayTxnAmt = MessManTool.changeChar(request.getParameter("displayTxnAmt"));
+	String message = MessManTool.changeChar(request.getParameter("message"));
+	String lchkTm = MessManTool.changeChar(request.getParameter("lchkTm"));
+	String clientID = MessManTool.changeChar(request.getParameter("clientID"));
+	
+	
+    String cssFileName = request.getParameter("cssFileName");//»ñÈ¡¿Í»§µ±Ç°Ê¹ÓÃµÄCSSÑùÊ½
+	if(cssFileName ==null){
+		cssFileName = "skin.css";
+	}		
+	
+	
+	String dynamicCode="";
+	String dynamicCodeSeq="";
+	String sendPass = "";
+	
+	if(loginType.equals("0")){
+	//¶¯Ì¬ÃÜÂë·½Ãæ
+		sendPass=MessManTool.changeChar(request.getParameter("sendPass"));//1--ĞèÒª 0--²»ĞèÒª;
+		if(sendPass.equals("1")||sendPass.equals("2")){
+			
+			dynamicCode=request.getParameter("dynamicCode");
+			dynamicCodeSeq=request.getParameter("dynamicCodeSeq");
+			
+			
+		}
+		
 	}
-	log.Write("3333333ç”µåŠ›ç¼´è´¹===3===step3:	è¦æ±‚ç”¨æˆ·è¾“å…¥å¯†ç ï¼Œç„¶åè¿›è¡Œä»˜æ¬¾ï¼ši_biz_id=["+biz_id+"]"+"å¡å·CDNO=["+cdno+"]======3333333");  
 	
 	
-	String queryInfo = MessManTool.changeChar(request.getParameter("report")); //å°†page2ä¼ æ¥æŸ¥è¯¢ä¿¡æ¯è¯»å–å‡ºæ¥
-	String TCusId = MessManTool.changeChar(request.getParameter("TCusId"));
-	String LChkTm = MessManTool.changeChar(request.getParameter("LChkTm"));
+	log.Write("message==="+message);
+	log.Write("loginType ´«ËÍµÇÂ½Àà±ğ 0£­×¢²áÓÃ»§(ÊÖ»ú°æ) 1£­Ö¤ÊéÓÃ»§ 2£­´óÖÚÓÃ»§="+loginType+"|dynamicCode="+dynamicCode+"|dynamicCodeSeq="+dynamicCodeSeq);
 	
-	log.Write("the query information translated from the page 2 is"+ queryInfo);
-	String report = queryInfo + "ActNo,"+cdno+"|TCusId," + TCusId + "|LChkTm," + LChkTm + "|";	
-	
-	log.Write("=33333333333333333=ç”µåŠ›ç¼´è´¹çš„ç¬¬3ä¸ªjspæ–‡ä»¶===3333333333333333 " + report);
+		
 %>
 
+<!-------------------------------------------------------------------
+                          ±ê×¼JavaScript¿âÒıÓÃ
+--------------------------------------------------------------------->
+<script language="JavaScript" src="/personbank/HttpProxy?URL=/midserv/js/public.js&dse_sessionId=<%=dse_sessionId%>"></script>
+<script language="JavaScript" src="/personbank/HttpProxy?URL=/midserv/js/public_card.js&dse_sessionId=<%=dse_sessionId%>"></script>
 
-<HTML>
+<!--------------------------------------------------------------------
+   µ±Ç°Ò³ÃæJavaScriptº¯Êı²¿·Ö£¬°üÀ¨Ìá½»ÑéÖ¤£¬Ò³Ãæ¶¯×÷£¬¾ßÌåÄ¿±êµÈ´úÂë
+---------------------------------------------------------------------->
+
+<!--------------------------------------------------------------------
+                          Ò³ÃæHTML±íÏÖ²¿·Ö    
+---------------------------------------------------------------------->
+
+<html>
 	<head>
-		<title>äº¤é€šé“¶è¡Œç½‘ä¸ŠæœåŠ¡</title>
-		<link rel="stylesheet" type="text/css" href="/personbank/css/<%=cssFileName%>">
-		<script type="text/JavaScript">		
-			var isOK = false;
-			//åˆ¤æ–­è¾“å…¥çš„å¯†ç ä½æ•°
-			function beforeSubmit(){
-				if(document.form1.passWord.value.length!=6){				
-					return false;
+		<title>½»Í¨ÒøĞĞÍøÉÏ·şÎñ</title>
+		<meta http-equiv="pragma" content="no-cache">
+		<meta http-equiv="cache-control" content="no-cache">
+		<meta http-equiv="expires" content="0">
+		<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+		
+		<script type="text/javascript">
+			var clickBoolean=true;
+			function tj1(){
+				if(clickBoolean){
+					document.safeInput1.commit("safeCommit1");
+					document.safeCommit1.submit("f1"); 
+					clickBoolean=false;
 				}
-				else {
-					return true;
-				}			
+					
 			}
-			
-			//æäº¤å‡½æ•°
-			function tiJiao(){
-	
-				isOK = beforeSubmit();
-				if (isOK){
-					isOK = false;
-					document.forms[0].submit();
+			function tj2(){
+				if(clickBoolean){
+					clickBoolean=false;
+					Window.location="/personbank/HttpProxy?dse_sessionId=<%=dse_sessionId %>&URL=/midserv/midSelect.jsp";
 				}
-				else{
-					alert("å¯†ç ä½æ•°ä¸æ­£ç¡®ï¼Œè¯·é‡æ–°è¾“å…¥6ä½å¯†ç ï¼");
-				}				
-			}		
+			}
 		</script>
+		<link rel="stylesheet" type="text/css" href="/personbank/css/<%=cssFileName%>">
+		<script language="JavaScript"	src="/personbank/HttpProxy?URL=/midserv/js/common.js&dse_sessionId=<%=dse_sessionId%>"></script>
 	</head>
-	
-	<BODY leftmargin="0" topmargin="0"  oncontextmenu=self.event.returnValue=false onselectstart="return false">
-	    <DIV align=center>
-	    	<form action="/personbank/HttpProxy" method=post name="form1">	    
-		    	<input type="hidden" name="URL" value="/midserv/dianLiJiaoFei4.jsp"/>
-				<input type="hidden" name="dse_sessionId" value="<%=dse_sessionId%>"/>
-				<input type="hidden" name=biz_id value="<%=biz_id%>"/>
-				<input type="hidden" name=step_id value="2"/>
-				<input type="hidden" name="report" value="<%=report%>"/>
-				
+	<body leftmargin="0" topmargin="0" marginwidth="0" marginheight="0">
+		<center>
+			<div class="indent">
+				<script language=JavaScript src="/personbank/js/writeNewActivxObjectForProxy.js"></script>
 				<table width="100%" align="center" cellpadding="1" cellspacing="1" class="tab">
-					<tr>
-			    		<td width="35%" class="tab_title" colspan="2">è¾“ å…¥ ç¼´ è´¹ å¯† ç  </td>	    	
-			        </tr>	
-					<tr>
-						<td width="35%" class="tab_th">&nbsp;äº¤æ˜“å¯†ç : </td>
-						<td width="65%" class="tab_tr" align="center">
-							<input type="password" name="passWord" size="20" value="" minleng='6' maxleng='6'/>
+					<tr align="left"> 
+						<td class="tab_title">Êä Èë ½» Ò× ÃÜ Âë ½ø ĞĞ ½É ·Ñ</td>
+					</tr>
+				<script language=JavaScript> writeNewCommitActivxObject('/personbank')</script>	
+				<FORM action="/personbank/HttpProxy" method=post name="f1">
+					<input type="hidden" name="dse_sessionId"	value="<%=dse_sessionId%>">
+					<input type="hidden" name="URL" value="/midserv/dianLiJiaoFei4.jsp">
+					<input type="hidden" name=biz_id value="<%=biz_id %>">
+					<input type="hidden" name=step_id value="2">
+					<input type="hidden" name="bocomPwd"/>
+					<input type="hidden" name=message value="<%=message%>">
+					<input type="hidden" name=displayTxnAmt value="<%=displayTxnAmt%>">
+					<input type="hidden" name=lchkTm value="<%=lchkTm%>">
+					<input type="hidden" name=clientID value="<%=clientID%>">
+					<%if(loginType.equals("0")){ %>
+					<input type="hidden" name="dynamicCode" value="<%=dynamicCode%>">
+					<input type="hidden" name="dynamicCodeSeq" value="<%=dynamicCodeSeq%>">
+					<%} %>
+					
+						
+						<tr class="tab_tr">
+							<td width="50%" align="right" height="22" class="InputTip">
+								½É·Ñ½ğ¶î£º
+							</td>
+							<td width="50%" align="left" height="22" class="InputTip">
+								<%=displayTxnAmt%>  Ôª
+						    </td>
+						</tr>
+				
+						
+						<tr class="tab_tr">
+							<td align="right" height="22" class="InputTip">
+								½»Ò×ÃÜÂë:
+							</td>
+							<!--td align="left" height="22" class="InputTip"><SCRIPT language=JavaScript> writePwdActivxObjectLenClass('safeInput1','safeInput1','/personbank/','bocomPwd',20,6,'20','153','/ZomnYmq1MnNjizoVo2E7bjgVAr2ePAWzY4s6FaNhO34UlGH/zfcB/2aJp2JqtTJWxCKiMnQswZhMfJzDfHD8w==')</SCRIPT></td-->
+							<td class="InputTip"><SCRIPT language=JavaScript> writeNewPwdActivxObjectLenClass ('safeInput1','safeInput1','/personbank/','bocomPwd',20,6,'20','153','<%=dse_sessionId%>')</SCRIPT></td>  						
+						</tr>
+						
+						<%if(loginType.equals("0")){ %>
+						<tr class="tab_tr">
+							<td align="right" height="22" class="InputTip">
+								¶¯Ì¬ÃÜÂë:
+							</td>
+							<td align="left" height="22" class="InputTip">
+								<!--input type="text" name="dynamicCodeMan" size="6" maxlength="6" onkeypress="onlyMunNoPointer();"-->								
+								<input type="text" name="dynamicCodeMan" value="<%=dynamicCode%>">								
+							</td>
+						</tr>
+						<tr class="tab_tr">
+							<td align="right" height="22" class="InputTip">
+								ÃÜÂëĞòºÅ:
+							</td>
+							<td align="left" height="22" class="InputTip">
+								<input type="text" name="dynamicCodeSeqMan" value="<%=dynamicCodeSeq%>"  readonly="readonly">
+							</td>
+						</tr>
+						
+						<%} %>
+					
+					<tr class="tab_result">
+						<td align="center" colspan="3">
+							<input type="button" onclick="tj1();" value="È· ¶¨" class="button_bg">
+							<input type="button" onclick="window.history.back();" value="·µ »Ø"	class="button_bg">
+							<!--input type="button" onclick="tj2();" value="·ÅÆú" class="button_bg"-->
 						</td>
 					</tr>
-					<tr class="tab_result">
-				    	<td align="center" colspan="2">
-						  	<input type="button" class="button_bg" onclick="tiJiao()" value="ç¡®è®¤" style={cursor:hand;}/>
-							<input type="reset" class="button_bg" name="Submit2" value="é‡å¡«"/>
-							<input type="button" class="button_bg" name="Submit3" value="è¿”å›" onclick="javascript:history.back()" /> 	
-				   </tr>
-				</table>				
-			</form>
-		</DIV>
-	</BODY>	
-</HTML>
+				
+					</table>
+				</FORM>
+				
+			</DIV>
+		</center>
+	</body>
+</html>

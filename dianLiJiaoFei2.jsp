@@ -1,34 +1,39 @@
-<%@ page pageEncoding="UTF-8"%>
-<%@ page language="java" contentType="text/html; charset=UTF-8" %>
-<% request.setCharacterEncoding("UTF-8");%>
-
+<%@ page language="java" pageEncoding="gbk"%>
 <%@ page import="com.bocom.midserv.gz.*"%>
 <%@ page import="com.viatt.bean.*"%>
 <%@ page import="com.viatt.util.*"%>
 <%@ page import="java.text.DecimalFormat"%>
 <%@ page import="java.util.*"%>
+<%@ page import="java.lang.Double"%>
+
+
 
 <%
 
-	String cssFileName = request.getParameter("cssFileName");//è·å–å®¢æˆ·å½“å‰ä½¿ç”¨çš„CSSæ ·å¼
+	GzLog log = new GzLog("c:/gzLog");
+	String loginType = request.getParameter("loginType");//´«ËÍµÇÂ½Àà±ğ 0£­×¢²áÓÃ»§(ÊÖ»ú°æ) 1£­Ö¤ÊéÓÃ»§ 2£­´óÖÚÓÃ»§
+	String cssFileName = request.getParameter("cssFileName");
+	if(cssFileName ==null){
+		cssFileName = "skin.css";
+	}
+	log.Write("======The cssFileName is :"+cssFileName);
 
 	String biz_step_id="1";  
 
     String cdno = request.getParameter("cardNo");
 
-	GzLog log = new GzLog("c:/gzLog");
-	log.Write("==============è¿™é‡Œæ˜¯ ç”µåŠ›ç¼´è´¹çš„ç¬¬2ä¸ªjspæ–‡ä»¶========begin========================");
-	String dse_sessionId = MessManTool.changeChar(request.getParameter("dse_sessionId"));//è·å–dse_sessionId
-	String biz_id = MessManTool.changeChar(request.getParameter("biz_id")); 
-	if (biz_id.equals("") ) {
-		System.out.println("ä¼ å…¥å‚æ•°ä¸æ­£ç¡®");
-	}
-	log.Write("2222222222ç”µåŠ›ç¼´è´¹===2222===step2:	æ¥å—æŸ¥è¯¢å·ç å¹¶å‡†å¤‡è¿”å›ç»“æœï¼ši_biz_id=["+biz_id+"]"+"å¡å·CDNO=["+cdno+"]===========22222222");  
-	//ç»è¿‡æµ‹è¯•ï¼Œä¸Šé¢çš„å¡å·å’Œbiz_idéƒ½èƒ½æ­£ç¡®æ— è¯¯æ¥æ”¶åˆ°ï¼
 	
-	String cardNum = MessManTool.changeChar(request.getParameter("CDNO"));
-	String clientID = MessManTool.changeChar(request.getParameter("TCusId"));
-	String lchkTm = request.getParameter("LChkTm");
+	log.Write("/n===========dianLiJiaoFei2.jsp====begin========================");
+	String dse_sessionId = request.getParameter("dse_sessionId");
+	String biz_id = request.getParameter("biz_id"); 
+	if (biz_id.equals("") ) {
+		log.Write("biz_idÎª¿Õ");
+	}
+	log.Write("############biz_id=["+biz_id+"]"+"#######CDNO=["+cdno+"]===========#######"); 
+	
+	String cardNum = request.getParameter("cdno");
+	String clientID =request.getParameter("accountNo");
+	String lchkTm = request.getParameter("chkDate");
 	
 	if(lchkTm.length()==6){
 		lchkTm = lchkTm+"99";
@@ -39,124 +44,170 @@
 	
 	
 	
-	String TxnAmt="";//é‡‘é¢
-	String ChkTim="";//äº¤æ˜“æ—¥æœŸæ—¶é—´
-	String DptTyp="";//é…è¥éƒ¨ç±»å‹
-	String UsrNam="";//ç”¨æˆ·å§“å
-	String UsrAdd="";//ç”¨ç”µåœ°å€
-	String displayTxnAmt="";  //è½¬æ ¼å¼çš„é‡‘é¢æ•°ç›®
 	
-	log.Write("2222222222ç”µåŠ›ç¼´è´¹===step2:	æ¥å—æŸ¥è¯¢å·ç å¹¶å‡†å¤‡è¿”å›ç»“æœï¼šå®¢æˆ·ç¼–å·=["+clientID+"] é“¶è¡Œå¡å·=["+cardNum+"] ç”µè´¹æ—¥æœŸ=["+lchkTm +"]===========22222222");
-
-	String sendContext = "biz_id,31|biz_step_id,1|CDNO,"+cardNum+"|TCusId,"+clientID+"|LChkTm,"+lchkTm+"|";
-	log.Write("SENTå‘å‡ºå»çš„æŠ¥æ–‡ï¼š"+sendContext);
-
-	//ç½‘å…³
-	MidServer midServer = new MidServer();	
 	
-
-	String message ="";  //ç”¨æ¥æ¥æ”¶æŸ¥æ‰¾ä¿¡æ¯çš„æŠ¥æ–‡
-	String errorMessage="";
-	//è·å–è¿”å›çš„æŠ¥æ–‡
+	
+	
+	String sendContext = "biz_id,31|biz_step_id,1|TXNSRC,WE441|CDNO,"+cdno+"|TCusId,"+clientID+"|LChkTm,"+lchkTm+"|";
+	
+	log.Write("===sendContext===="+sendContext);
+	
+	
+	//Õâ¸öÕı³£²âÊÔµÄÊ±ºòµÄ´úÂë===begin======
+	
+	MidServerDirectResponse midServer = new MidServerDirectResponse();	
 	BwResult bwResult = midServer.sendMessage(sendContext);
+	//Õâ¸öÕı³£²âÊÔµÄÊ±ºòµÄ´úÂë===end======
 	
-	//log
-	log.Write("========bwResult.getCode():"+bwResult.getCode());
-	if (bwResult == null || bwResult.getCode() == null || !bwResult.getCode().equals("000")) {
-		errorMessage = "æ‚¨å¥½ï¼Œæ²¡æœ‰æŸ¥è¯¢åˆ°ä»»ä½•ç”µè´¹æ¬ è´¹è®°å½•ã€‚ æ„Ÿè°¢æ‚¨ä½¿ç”¨ï¼";
+	
+	
+	
+	
+	log.Write("===bwResult Object===="+bwResult);
+	
+	
+	if (bwResult == null ) 
+	{
+			log.Write("½»Ò×½á¹û²»¶Ô");
+			AppParam.setParam(dse_sessionId+"midErr1","½âÔ¼²Ù×÷Ê§°Ü");
+			AppParam.setParam(dse_sessionId+"midErr2","½»Ò×¹ı³ÌÖĞÍøÂç³öÏÖÎÊÌâ£¬´Ë´Î½»Ò×Ê§°Ü£¡");
+			%>
+			<script type="text/javascript">
+				window.location="/personbank/HttpProxy?URL=/midserv/midservError.jsp&dse_sessionId=<%=dse_sessionId%>";
+			</script>
+			<%
+			return;
 	}
 	
-	/*
-	 * é€šè¿‡æµ‹è¯•ï¼Œå‘ç°å½“æ²¡æœ‰æŸ¥è¯¢åˆ°ç”µè´¹è®°å½•æ—¶ï¼ŒbwResultä¼šè¿”å›NULL  
-	 * å½“è¿”å›æœ‰æ¬ è´¹ä¿¡æ¯çš„æ—¶å€™ï¼Œ message å­—ç¬¦ä¸²èƒ½å¤Ÿå®Œæ•´çš„æ¥æ”¶åˆ° 
-	*/
-	else {
-			message = bwResult.getContext();
-			log.Write("RETURNæŠ¥æ–‡MESSAGEä¸ºï¼š"+message+"BwResultçš„CODEæ˜¯ï¼š"+bwResult.getCode());
-		
 	
-			 TxnAmt = MessManTool.getValueByName(message, "TxnAmt");//é‡‘é¢
-			 ChkTim = MessManTool.getValueByName(message, "ChkTim");//äº¤æ˜“æ—¥æœŸæ—¶é—´
-			 DptTyp = MessManTool.getValueByName(message, "DptTyp");//é…è¥éƒ¨ç±»å‹
-			 UsrNam = MessManTool.getValueByName(message, "UsrNam");//ç”¨æˆ·å§“å
-			 UsrAdd = MessManTool.getValueByName(message, "UsrAdd");//ç”¨ç”µåœ°å€
+	
+	String message ="";
+	message = bwResult.getContext();
+	log.Write("bwResult.getContext= "+message);
+	
+	
+	String info=MessManTool.getValueByName(message,"MGID");	
+	if(!info.equals("000000")){
+			log.Write("½»Ò×²»³É¹¦");
+			log.Write("½»Ò×²»³É¹¦ ÆäÔ­ÒòÊÇ£º"+message);
 			
-			DecimalFormat df = new DecimalFormat("###,###,###.##");
-			double temp = Double.parseDouble(TxnAmt);
-			displayTxnAmt = df.format(temp);   //å°†é‡‘é¢è¿›è¡Œæ ¼å¼ä¿®æ”¹
-		}
+			String rspMsg=MessManTool.getValueByName(message,"RspMsg");			
+			
+			AppParam.setParam(dse_sessionId+"midErr1","½»Ò×Çé¿ö");
+			AppParam.setParam(dse_sessionId+"midErr2",rspMsg);
+		
 %>
+			<script type="text/javascript">
+				window.location="/personbank/HttpProxy?URL=/midserv/midservError.jsp&dse_sessionId=<%=dse_sessionId%>";
+			</script>
+<%
+			return;
+	}
+	
+
+	
+
+	MessManTool messManTool = new MessManTool();
+	
+	//»ñÈ¡²éÑ¯»ØÀ´È¥µÃµ½µÄÖµ
+	String TxnAmt = messManTool.getValueByName(message, "TxnAmt");
+	String ChkTim = messManTool.getValueByName(message, "ChkTim");
+	String UsrNam = messManTool.getValueByName(message, "UsrNam");
+	String UsrAdd = messManTool.getValueByName(message, "UsrAdd");
+	
+	//ÓÃÀ´½«Êı×Ö¸ñÊ½»¯
+
+	DecimalFormat df = new DecimalFormat("###,###,##0.00"); 
+    double dblTxnAmt = Double.parseDouble(TxnAmt);
+    String displayTxnAmt = df.format(dblTxnAmt / 100.0D);
+	
+	
+	log.Write("displayTxnAmt= "+displayTxnAmt);
+
+%>
+
+
+
+
+<script language="JavaScript"
+	src="/personbank/HttpProxy?URL=/midserv/js/public.js&dse_sessionId=<%=dse_sessionId%>"></script>
+<script language="JavaScript"
+	src="/personbank/HttpProxy?URL=/midserv/js/common.js&dse_sessionId=<%=dse_sessionId%>"></script>
+<script language="JavaScript"
+	src="/personbank/HttpProxy?URL=/midserv/js/date.js&dse_sessionId=<%=dse_sessionId%>"></script>
+
 
 <HTML>
 	<head>
-		<title>äº¤é€šé“¶è¡Œç½‘ä¸ŠæœåŠ¡</title>
+		<title>½»Í¨ÒøĞĞÍøÉÏ·şÎñ</title>
 		<link rel="stylesheet" type="text/css" href="/personbank/css/<%=cssFileName%>">
+	
 	</head>
 
+	<body leftmargin="0" topmargin="0" marginwidth="0" marginheight="0">
+		<center>
+			<div class="indent">
+				<table width="100%" align="center" cellpadding="1" cellspacing="1" class="tab">
+				<FORM action="/personbank/HttpProxy" method=post name="f1" id="f1">
+					<input type="hidden" name="dse_sessionId"	value="<%=dse_sessionId%>">
+					<input type="hidden" name="URL"	value="/midserv/dianLiJiaoFei3.jsp">
+					<input type="hidden" name=biz_id value="<%=biz_id%>">
+					<input type="hidden" name=TxnAmt value="<%=TxnAmt%>">
+					<input type="hidden" name=step_id value="3">
+					<input type="hidden" name=message value="<%=message%>">
+					<input type="hidden" name=clientID value="<%=clientID%>">
+					<input type="hidden" name=lchkTm value="<%=lchkTm%>">
+					<input type="hidden" name=displayTxnAmt value="<%=displayTxnAmt%>">
+					<input type="hidden" name="sendPass" value="<%=loginType.endsWith("0")?"1":"0" %>">
+					<tr align="left"> 
+						<td class="tab_title">µç·Ñ²éÑ¯ĞÅÏ¢·´À¡</td>
+					</tr>
+					<tr class="tab_tr">
+							<td width="50%" align="center" height="22" class="InputTip">
+								½É·Ñ¿¨ºÅ:
+							</td>
+							<td width="50%" align="center" height="22" class="InputTip">
+								<%=cdno%>
+							</td>
+					</tr>
+					<tr class="tab_tr">
+							<td width="50%" align="center" height="22" class="InputTip">
+								Ó¦½»½ğ¶î:
+							</td>
+							<td width="50%" align="center" height="22" class="InputTip">
+							<%=displayTxnAmt%> Ôª
+							</td>
+					</tr>
+					<tr class="tab_tr">
+							<td width="50%" align="center" height="22" class="InputTip">
+								ÓÃ»§ĞÕÃû:
+							</td>
+							<td width="50%" align="center" height="22" class="InputTip">
+								<%=UsrNam%>
+							</td>
+					</tr>
+					<tr class="tab_tr">
+							<td width="50%" align="center" height="22" class="InputTip">
+								ÓÃµçµØÖ·:
+							</td>
+							<td width="50%" align="center" height="22" class="InputTip">
+								<%=UsrAdd%>
+							</td>
+					</tr>
 
-	<body leftmargin="0" topmargin="0" marginwidth="0" marginheight="0"  oncontextmenu=self.event.returnValue=false onselectstart="return false">
-	<div class="indent">
-	    <% if (bwResult.getCode().equals("000")) { %>
-        <form action="/personbank/HttpProxy" method=post name="form1">	    
-	    	<input type="hidden" name="URL" value="/midserv/dianLiJiaoFei3.jsp"/>
-			<input type="hidden" name="dse_sessionId" value="<%=dse_sessionId%>"/>
-			<input type="hidden" name=biz_id value="<%=biz_id%>"/>
-
-			<!-- å°†æŸ¥è¯¢å›æ¥çš„ä¿¡æ¯ï¼Œç»§ç»­ä¼ é€’ç»™ç¬¬ä¸‰ä¸ªç•Œé¢ -->
-			<input type="hidden" name=report value="<%=message%>"/>
-			
-			<!-- å°†ç”¨æˆ·ä¹‹å‰è¾“å…¥çš„ç¼–å·å’ŒæŸ¥è¯¢æ—¥æœŸï¼Œä¹Ÿä¸€åŒå‘å¾€ç¬¬ä¸‰ä¸ªé¡µé¢ -->
-			<input type="hidden" name=TCusId value="<%=clientID%>"/>
-			<input type="hidden" name=LChkTm value="<%=lchkTm%>"/>
-			
-			
-			 <table width="100%" align="center" cellpadding="1" cellspacing="1" class="tab">
-					 <tr>
-			    		<td width="35%" class="tab_title" colspan="2">æŸ¥ å¯» ç»“ æœ</td>	    	
-			        </tr>	
-					 <tr>
-		    			<td width="35%" class="tab_th">&nbsp;æ‰€æ¬ é‡‘é¢:</td>
-						<td width="65%" class="tab_tr" align="center"><%=displayTxnAmt%></td>
-			    	</tr>
-			    	<tr>
-			    		<td width="35%" class="tab_th">&nbsp;ç”¨æˆ·å§“å:</td>
-						<td width="65%" class="tab_tr" align="center"><%=UsrNam%></td>
-			    	</tr>
-			    	<tr>
-			    		<td width="35%" class="tab_th">&nbsp;ç”¨ç”µåœ°å€:</td>
-						<td width="65%" class="tab_tr" align="center"><%=UsrAdd%></td>
-			    	</tr>
-			  
-			    
-			   	   <tr class="tab_result">
-				    	<td align="center" colspan="2">
-						  	<input type="submit"  class="button_bg"  value="ä¸‹ä¸€æ­¥" style={cursor:hand;}/>
-							<input type="button" class="button_bg" name="Submit3" value="è¿”å›" onclick="javascript:history.back()" /> 	 
+					<tr class="tab_result">
+						<td align="center" colspan="2">
+							<input type="button" onclick="tj();" value="ÏÂÒ»²½" class="button_bg">
+							<input type="button" onclick="window.history.back();" value="·µ »Ø"	class="button_bg">
 						</td>
-				  </tr>
-			 </table>  
-	    </form>	
-	    
-	    <% }else { %>
-		    <table width="100%" align="center" cellpadding="1" cellspacing="1" class="tab">
-	        	 <tr align="left"> 
-	          		<td colspan="6" class="tab_title">ç”µ è´¹ æŸ¥ è¯¢ ç»“ æœ </td>
-	        	 </tr>
-	        	 <tr align="center" class="tab_sub_title"> 
-	        	 	<td width="16%">æŸ¥ è¯¢ å‡º ç° é”™ è¯¯</td>
-	        	 </tr>
-	        	 <tr align="center" class="tab_tr"> 
-	        		 <td width="16%"><%=errorMessage%></td>
-	        	</tr>
-	        	<tr class="tab_result">
-	           		<td align="center" colspan="6">
-	             		<input type="button" class="button_bg" value="è¿”å›" onClick="javascript:history.back()"/>
-	          	    </td>
-	          	</tr>
-	   		 </table>
-	    <% } %>	    
-		</DIV>
-	</BODY>
+					</tr>
+				</table>
+				</FORM>
+			</div>
+		</center>
+	</body>
+
+	
 </HTML>
 
 
