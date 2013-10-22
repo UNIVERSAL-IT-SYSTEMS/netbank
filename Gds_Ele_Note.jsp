@@ -14,7 +14,7 @@
 
     //String biz_step_id="1";  
 
-    com.bocom.midserv.gz.GzLog log = new com.bocom.midserv.gz.GzLog("c:/gzLog");
+    GzLog log = new GzLog("c:/gzLog");
     String cardNo = request.getParameter("cardNo");
     String uri = request.getRequestURI();
     log.Write(cardNo+"½øÈë["+uri+"]");

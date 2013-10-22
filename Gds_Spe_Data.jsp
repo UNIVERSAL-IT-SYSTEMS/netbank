@@ -22,7 +22,7 @@
 	String custName = request.getParameter("custName");
 	
 	//创建日志实例
-	com.bocom.midserv.gz.GzLog log = new com.bocom.midserv.gz.GzLog("c:/gzLog");
+	GzLog log = new GzLog("c:/gzLog");
 	log.Write(cardNo+"进入["+uri+"]");
 
 %>
@@ -81,8 +81,10 @@
         <%="请选择签约类型:" %>
         </td>
         <td align="left" width="50%">
-        <input type='radio' name='TAgtTp<%=businessId %>' value='1' >主号签约</input>
-        <input type='radio' name='TAgtTp<%=businessId %>' value='2' >副号签约</input>
+        <input type='radio' name='TAgtTp<%=businessId %>' value='1'
+            onclick=TCusId.style.display='none' >主号签约</input>
+        <input type='radio' name='TAgtTp<%=businessId %>' value='2'
+            onclick=TCusId.style.display='block' >副号签约</input>
         </td>
       </tr>
       <tr class="tab_tr"> 
@@ -93,7 +95,7 @@
         <input type='text' name='MCusId<%=businessId %>' />
         </td>
       </tr>
-      <tr class="tab_tr"> 
+      <tr class="tab_tr" id='TCusId' style="display:none"> 
         <td align="right">
         <%="请输入"+businessName+"副号:" %>
         </td>

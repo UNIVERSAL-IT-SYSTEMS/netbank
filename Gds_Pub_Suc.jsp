@@ -23,7 +23,7 @@
 	String custName = request.getParameter("custName");
 	
 	//创建日志实例
-	com.bocom.midserv.gz.GzLog log = new com.bocom.midserv.gz.GzLog("c:/gzLog");
+	GzLog log = new GzLog("c:/gzLog");
 	log.Write(cardNo+"进入["+uri+"]");
 
 

@@ -23,7 +23,7 @@
 	String custName = request.getParameter("custName");
 	
 	//创建日志实例
-    com.bocom.midserv.gz.GzLog log = new com.bocom.midserv.gz.GzLog("c:/gzLog");
+    GzLog log = new GzLog("c:/gzLog");
 	log.Write(cardNo+"进入["+uri+"]");
 
     //手机动态密码字段
@@ -169,7 +169,11 @@
             <%=mCusId %>
             </td>
           </tr>
-          <tr class="tab_tr"> 
+          <%
+          String display = "none";
+          if(!tAgtTp.equals("1")){display = "block";}
+          %>
+          <tr class="tab_tr" style="display:<%=display %>" > 
             <td align="right" width="50%">
             副号:
             </td>
