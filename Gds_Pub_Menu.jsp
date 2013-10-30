@@ -107,6 +107,11 @@
  %>
             </td>
         </tr>
+        <tr class="tab_tr">
+            <td align="left">
+                <p><font style="color:red;">温馨提示：</font>已受理的签约业务，如要重新办理，请到营业网点柜台办理。</p>
+            </td>
+        </tr>
 		<tr class="tab_result">
 		    <td align="center">
 		        <input type="submit"  class="button_bg"  value="确定" style={cursor:hand;}/>
