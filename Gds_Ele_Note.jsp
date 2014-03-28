@@ -33,10 +33,18 @@
 
     <body leftmargin="0" topmargin="0" marginwidth="0" marginheight="0"  oncontextmenu=self.event.returnValue=false onselectstart="return false">
     <div class="indent">
-	    <div  class="guide">
-	       <li>暂不支持电费的电子渠道委托签约，您可直接通过我行交博汇网上商城，手机银行或自
-	    助通终端进行自助缴费，或携带身份证、任一期缴费发票到交通银行网点办理签约手续。</li>
-	    </div>
+		<table width="90%" align="center" cellpadding="1" cellspacing="1" class="tab">
+        <tr class="tab_tr">
+            <td align="left">
+                <p><font style="color:red;">温馨提示：</font>暂不支持电费的电子渠道委托签约，您可直接通过我行交博汇网上商城，手机银行或自助通终端进行自助缴费，或携带身份证、任一期缴费发票到交通银行网点办理签约手续。</p>
+            </td>
+        </tr>
+		<tr class="tab_result">
+		    <td align="center">
+		        <input type="button" class="button_bg" name="Submit3" value="返回" onclick="javascript:history.back()" />      
+		    </td>      
+		</tr>
+		</table>
     </div>
     </body>
 </html>

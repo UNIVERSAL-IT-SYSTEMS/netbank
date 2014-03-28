@@ -87,7 +87,7 @@
         </tr>
         <tr class="tab_tr">
             <td align="left">
-                <p><a href='/personbank/HttpProxy?URL=/midserv/Gds_Ele_Note.jsp&dse_sessionId=<%=dse_sessionId%>'>电费划扣</a></p>
+                <p><a href='/personbank/HttpProxy?URL=/midserv/Gds_Ele_Note.jsp&dse_sessionId=<%=dse_sessionId%>'>电费签约</a></p>
             </td>
         </tr>
         <tr class="tab_tr">
