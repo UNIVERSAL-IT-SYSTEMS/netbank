@@ -44,6 +44,11 @@
 			+ biz_id);
 	int pageSize = pageTools.getPageSize();
 	String pagegetRoll = pageTools.pagegetRoll();
+	
+	String cssFileName = request.getParameter("cssFileName");//获取客户当前使用的CSS样式
+	if(cssFileName ==null){
+		cssFileName = "skin.css";
+	}
 %>
 <!-------------------------------------------------------------------
                           标准JavaScript库引用
@@ -63,14 +68,9 @@
 
 <html>
 	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=GBK">
 		<title>交通银行网上服务</title>
-		<link rel="stylesheet"
-			href="/personbank/HttpProxy?URL=/midserv/css/personbank.css&dse_sessionId=<%=dse_sessionId%>">
-		<link rel="stylesheet"
-			href="/personbank/HttpProxy?URL=/midserv/css/midserv.css&dse_sessionId=<%=dse_sessionId%>">
-		<link href="/personbank/css/csspt.css" rel="stylesheet"
-			type="text/css">
-		<link href="/personbank/css/content.css" rel="stylesheet" type="text/css">
+		<link rel="stylesheet" type="text/css" href="/personbank/css/<%=cssFileName%>">
 	</head>
 
 	<script type="text/javascript">
@@ -115,31 +115,16 @@
 	</script>
 
 
-	<body leftmargin="0" topmargin="0" oncontextmenu=self.event.returnValue=false onselectstart="return false">
+	<body leftmargin="0" topmargin="0" marginwidth="0" marginheight="0">
 		<center>
-			<DIV align=center>
-				<table width="100%" border="0" cellspacing="0" cellpadding="0">
-					<tr>
-						<td
-							background="/personbank/HttpProxy?URL=/midserv/images/pageTitle.gif&dse_sessionId=<%=dse_sessionId%>"
-							class="pageTitle">
-							&nbsp;&nbsp;请 选 择 对 应 的 门 票
-						</td>
-						<td rowspan="2" align="right" valign="top">
-							&nbsp;
-						</td>
-					</tr>
-					<tr>
-						<td>
-							<img
-								src="/personbank/HttpProxy?URL=/midserv/images/xianb.gif&dse_sessionId=<%=dse_sessionId%>"
-								width="100" height="20">
-						</td>
-					</tr>
-				</table>
-				<FORM action="/personbank/HttpProxy" method=post name="f1">
-					<input type="hidden" name="dse_sessionId"
-						value="<%=dse_sessionId%>">
+			<div class="indent">
+				<table width="100%" align="center" cellpadding="1" cellspacing="1" class="tab">
+					<tr align="left"> 
+          	<td colspan="5" class="tab_title">请 选 择 对 应 的 门 票</td>
+        	</tr>
+					
+				<form name="f1" method="post" action="/personbank/HttpProxy">
+					<input type="hidden" name="dse_sessionId"	value="<%=dse_sessionId%>">
 					<input type="hidden" name="URL" value="/midserv/yinLvTong4.jsp">
 					<input type="hidden" name=biz_id value="<%=biz_id %>">
 					<input type="hidden" name=step_id value="4">
@@ -152,22 +137,20 @@
 					<input type="hidden" name=jsrq value="">
 					<input type="hidden" name=yxrq value="">
 					<input type="hidden" name=bz value="">
-					<table border="0" cellspacing="2" cellpadding="0" align="center"
-						width="85%">
-						<tr onclick="selectrow(this);" style="cursor:hand;">
-							<td align="center" height="22" width="8%" class="TableRow2">
+					<tr class="tab_tr" onclick="selectrow(this);" style="cursor:hand;">
+							<td align="center" width="8%" class="TableRow2">
 								选择
 							</td>
-							<td align="left" height="22" width="31%" class="TableRow2">
+							<td align="left" width="31%" class="TableRow2">
 								景区名称
 							</td>
-							<td align="left" height="22" width="31%" class="TableRow2">
+							<td align="left" width="31%" class="TableRow2">
 								门票名称
 							</td>
-							<td align="left" height="22" width="15%" class="TableRow2">
+							<td align="left" width="15%" class="TableRow2">
 								门票价格
 							</td>
-							<td align="left" height="22" width="15%" class="TableRow2">
+							<td align="left" width="15%" class="TableRow2">
 								电子优惠价
 							</td>
 						</tr>
@@ -181,10 +164,10 @@
 									String price4 = MoneyUtils.FormatMoney(Double.parseDouble(((String) map.get("param4")).trim()) / 100, "###0.00");
 									String price3 = MoneyUtils.FormatMoney(Double.parseDouble(((String) map.get("param5")).trim()) / 100, "###0.00");
 						%>
-						<tr onclick="selectrow(this);" style="cursor:hand;"
+						<tr class="tab_tr" onclick="selectrow(this);" style="cursor:hand;"
 							onmouseover="showdiv('bz<%=i%>');"
 							onmouseout="hiddendiv('bz<%=i%>');">
-							<td align="center" height="22" width="8%"
+							<td align="center" width="8%"
 								class="<%=(i + 1) % 2 == 1 ? "TableRow1"
 									: "TableRow2"%>">
 								<input type="radio"
@@ -198,28 +181,28 @@
 									bz="<%=map.get("param9") %>" 
 									name="ticketCode">
 							</td>
-							<td align="left" height="22" width="31%"
+							<td align="left" width="31%"
 								class="<%=(i + 1) % 2 == 1 ? "TableRow1"
 									: "TableRow2"%>">
 								<%=sightName%>
 							</td>
-							<td align="left" height="22" width="31%"
+							<td align="left" width="31%"
 								class="<%=(i + 1) % 2 == 1 ? "TableRow1"
 									: "TableRow2"%>">
 								<%=((String) map.get("param3")).trim()%>
 							</td>
-							<td align="left" height="22" width="15%"
+							<td align="left" width="15%"
 								class="<%=(i + 1) % 2 == 1 ? "TableRow1"
 									: "TableRow2"%>">
 								<%=price1%>
 							</td>
-							<td align="left" height="22" width="15%"
+							<td align="left" width="15%"
 								class="<%=(i + 1) % 2 == 1 ? "TableRow1"
 									: "TableRow2"%>">
 								<%=price2%>
 							</td>
 						</tr>
-						<tr>
+						<tr class="tab_tr" >
 							<td colspan="5">
 								<div style="display: none;" id="bz<%=i%>">
 									<%=map.get("param9")%>
@@ -230,23 +213,23 @@
 							}
 						}
 					%>
-						<tr>
+						<tr class="tab_tr" >
 							<td align="left" height="22" class="InputTip" colspan="5">
 								<%=pagegetRoll%>
 							</td>
 						</tr>
-					</table>
-				</FORM>
-				<table>
-					<tr>
-						<td>
+					
+					<tr class="tab_result">
+						<td align="center" colspan="5">
 							<input type="button" onclick="tj1();" value="下一步" class="button_bg">
 							<input type="button" onclick="window.history.back();" value="返 回"
 								class="button_bg">
 							
 						</td>
 					</tr>
-				</table>
+					</table>
+				</FORM>
+				
 			</DIV>
 		</center>
 	</body>

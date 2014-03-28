@@ -2,3 +2,14 @@ WEB-INF/classes/*
 .classpath
 .project
 .settings/*
+*.ldift
+*.dat
+.svn
+*.bak
+*WebLogic*
+_*
+*.log
+installService.cmd
+*.tlog
+setEnv.*
+*Service*

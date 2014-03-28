@@ -59,7 +59,7 @@
      this.document.f1.submit();
      return false;
      "
-									HREF="">签约管理
+									HREF="">随心充签约
 								</A>
 							</td>
 						</tr>
@@ -72,7 +72,7 @@
      this.document.f1.submit();
      return false;
      "
-									HREF="">解约管理
+									HREF="">随心充解约
 								</A>
 							</td>
 						</tr>

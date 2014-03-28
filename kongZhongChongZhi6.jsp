@@ -11,11 +11,17 @@
 	if (biz_id.equals("")) {
 		System.out.println("传入参数不正确");
 	}
+	
+	String cssFileName = request.getParameter("cssFileName");//获取客户当前使用的CSS样式
+	if(cssFileName ==null){
+		cssFileName = "skin.css";
+	}		
+		
 	String currpage=MessManTool.changeChar(request.getParameter("page"));
 	String tmp=""; 
 	String card1 = MessManTool.changeChar(request.getParameter("card1"));
 	String cdno = MessManTool.changeChar(request.getParameter("cardNo"));
-	String content = "biz_id,"+biz_id+"|biz_step_id,3|sign_flag,0|inst_no,交通银行|bank_acc,"+cdno+"|card1,"+card1+"|card2,|card3,|";
+	String content = "biz_id,"+biz_id+"|biz_step_id,3|sign_flag,0|TXNSRC,WE441|inst_no,交通银行|bank_acc,"+cdno+"|card1,"+card1+"|card2,|card3,|";
 	MidServer midServer = new MidServer();
 	BwResult bwResult = midServer.sendMessage(content);
 	if (bwResult == null || bwResult.getCode() == null|| !bwResult.getCode().equals("000")) {
@@ -46,64 +52,42 @@
 ---------------------------------------------------------------------->
 <html>
 	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=GBK">
 		<title>交通银行网上服务</title>
-		<link rel="stylesheet"
-			href="/personbank/HttpProxy?URL=/midserv/css/personbank.css&dse_sessionId=<%=dse_sessionId%>">
-		<link rel="stylesheet"
-			href="/personbank/HttpProxy?URL=/midserv/css/midserv.css&dse_sessionId=<%=dse_sessionId%>">
-		<link href="/personbank/css/csspt.css" rel="stylesheet"
-			type="text/css">
-		<link href="/personbank/css/content.css" rel="stylesheet" type="text/css">
+		<link rel="stylesheet" type="text/css" href="/personbank/css/<%=cssFileName%>">
 	</head>
 
-	<body leftmargin="0" topmargin="0" oncontextmenu=self.event.returnValue=false onselectstart="return false">
+	<body leftmargin="0" topmargin="0" marginwidth="0" marginheight="0">
 		<center>
-			<DIV align=center>
-				<table width="100%" border="0" cellspacing="0" cellpadding="0">
-					<tr>
-						<td
-							background="/personbank/HttpProxy?URL=/midserv/images/pageTitle.gif&dse_sessionId=<%=dse_sessionId%>"
-							class="pageTitle">
-							&nbsp;&nbsp;签 约 解 除
-						</td>
-						<td rowspan="2" align="right" valign="top">
-							&nbsp;
-						</td>
+			<div class="indent">
+				<table width="100%" align="center" cellpadding="1" cellspacing="1" class="tab">
+					<tr align="left"> 
+						<td class="tab_title">;签 约 解 除</td>
 					</tr>
-					<tr>
-						<td>
-							<img
-								src="/personbank/HttpProxy?URL=/midserv/images/xianb.gif&dse_sessionId=<%=dse_sessionId%>"
-								width="100" height="20">
-						</td>
-					</tr>
-				</table>
-				<FORM action="/personbank/HttpProxy" method=post>
-					<input type="hidden" name="dse_sessionId"
-						value="<%=dse_sessionId%>">
+					
+				<FORM action="/personbank/HttpProxy" method=post name="f1">
+					<input type="hidden" name="dse_sessionId"	value="<%=dse_sessionId%>">
 					<input type="hidden" name="URL" value="/midserv/midSelect.jsp">
 					<input type="hidden" name=biz_id value="<%=biz_id %>">
 					<input type="hidden" name=step_id value="1">
 					<input type="hidden" name=page value="<%=currpage %>">
 					<input type="hidden" name=card1 value="<%=card1 %>">
 					
-					<table border="0" cellspacing="2" cellpadding="0" align="center"
-						width="50%">
-						<tr>
-							<td width="50%" align="center" height="22" class="InputTip">
-								签约解除成功！
-							</td>
-						</tr>
-						
-					</table>
-				</FORM>
-				<table>
-					<tr>
-						<td>
-							<input type="button" onclick="tj();" value="确 定" class="button_bg">
+					<tr class="tab_tr">
+						<td align="center" class="InputTip">
+							签约解除成功！
 						</td>
 					</tr>
-				</table>
+					
+					<tr class="tab_result">
+						<td align="center">
+							<input type="button" onclick="tj();" value="返回" class="button_bg">
+						</td>
+					</tr>
+
+					</table>
+				</FORM>
+				
 			</DIV>
 		</center>
 	</body>

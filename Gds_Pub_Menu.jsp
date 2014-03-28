@@ -109,7 +109,7 @@
         </tr>
         <tr class="tab_tr">
             <td align="left">
-                <p><font style="color:red;">温馨提示：</font>已受理的签约业务，如要重新办理，请到营业网点柜台办理。</p>
+                <p><font style="color:red;">温馨提示：</font>1、已受理签约业务，如要重新办理，请到网点柜台办理；2、已成功签约业务，如需撤销，请凭有效身份证件到相关收费单位营业厅办理。</p>
             </td>
         </tr>
 		<tr class="tab_result">

@@ -1,8 +1,14 @@
-<%@ page language="java"  pageEncoding="gbk"%>
-<%@ page import="com.bocom.midserv.gz.*"%>
+<!-------------------------------------------------------------------
+                          标准页面服务对象引用
+-------------------------------------------------------------------->
+<%@ page language="java" contentType="text/html;charset=GBK" %>
+
 <%@ page import="java.util.Date" %>
 <%@ page import="com.viatt.bean.*"%>
 <%@ page import="com.viatt.util.*" %>
+<%@ page import="com.bocom.midserv.base.*" %>
+<%@ page import="com.bocom.midserv.web.*" %>
+<%@ page import="com.bocom.midserv.gz.*"%>
 <%
 	GzLog log = new GzLog("c:/gzLog");
 	String loginType = request.getParameter("loginType");//传送登陆类别 0－注册用户(手机版) 1－证书用户 2－大众用户
@@ -15,12 +21,20 @@
 	AppParam.setParam(dse_sessionId,dynamicCode);
 	
 	MessManTool messManTool = new MessManTool();
+	
+  String cssFileName = request.getParameter("cssFileName");//获取客户当前使用的CSS样式
+	if(cssFileName ==null){
+		cssFileName = "skin.css";
+	}		
+		
 %>
 
 <!-------------------------------------------------------------------
                           标准JavaScript库引用
 --------------------------------------------------------------------->
-<script language="JavaScript" src="/personbank/HttpProxy?URL=/midserv/js/common.js&dse_sessionId=<%=dse_sessionId%>">
+<script language="JavaScript" src="/personbank/HttpProxy?URL=/midserv/js/public.js&dse_sessionId=<%=dse_sessionId%>"></script>
+<script language="JavaScript" src="/personbank/HttpProxy?URL=/midserv/js/public_card.js&dse_sessionId=<%=dse_sessionId%>"></script>
+
 <!--------------------------------------------------------------------
    当前页面JavaScript函数部分，包括提交验证，页面动作，具体目标等代码
 ---------------------------------------------------------------------->
@@ -31,72 +45,51 @@
 
 <html>
 	<head>
-		<link rel="stylesheet" type="text/css" href="css/csspt.css">   
-		<link rel="stylesheet" type="text/css" href="css/public.css">
-		<script language="JavaScript" src="/personbank/js/public.js"></script>
-		<script language=JavaScript src="/personbank/js/writeActivxObject.js"></script>
-		<link rel="stylesheet"
-			href="/personbank/HttpProxy?URL=/midserv/css/personbank.css&dse_sessionId=<%=dse_sessionId%>">
-		<link rel="stylesheet"
-			href="/personbank/HttpProxy?URL=/midserv/css/midserv.css&dse_sessionId=<%=dse_sessionId%>">
-		<link href="/personbank/css/csspt.css" rel="stylesheet"
-			type="text/css">
-		<link href="/personbank/css/public.css" rel="stylesheet"
-			type="text/css">
-		<link href="/personbank/css/content.css" rel="stylesheet" type="text/css">
-			<script type="text/javascript">
-				var clickBoolean=true;
-				function tj1(){
-					if(clickBoolean){
-						document.safeInput1.commit("safeCommit1");
-		    			document.safeCommit1.submit("f1"); 
-		    			clickBoolean=false;
-					}
-					
-				}
-				function tj2(){
+		<title>交通银行网上服务</title>
+		<meta http-equiv="pragma" content="no-cache">
+		<meta http-equiv="cache-control" content="no-cache">
+		<meta http-equiv="expires" content="0">
+		<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+		
+		<script type="text/javascript">
+			var clickBoolean=true;
+			function tj1(){
 				if(clickBoolean){
-					clickBoolean=false;
-					window.location="/personbank/HttpProxy?dse_sessionId=<%=dse_sessionId %>&URL=/midserv/midSelect.jsp";
+					document.safeInput1.commit("safeCommit1");
+		    	document.safeCommit1.submit("f1"); 
+		    	clickBoolean=false;
 				}
+					
 			}
-			</script>
+			function tj2(){
+			if(clickBoolean){
+				clickBoolean=false;
+				Window.location="/personbank/HttpProxy?dse_sessionId=<%=dse_sessionId %>&URL=/midserv/midSelect.jsp";
+			}
+		}
+		</script>
+		<link rel="stylesheet" type="text/css" href="/personbank/css/<%=cssFileName%>">
+		<script language="JavaScript"	src="/personbank/HttpProxy?URL=/midserv/js/common.js&dse_sessionId=<%=dse_sessionId%>"></script>
 	</head>
 
-	<body leftmargin="0" topmargin="0" >
-	<SCRIPT language=JavaScript> writeCommitActivxObject('')</SCRIPT>
+	<body leftmargin="0" topmargin="0" marginwidth="0" marginheight="0">
 		<center>
-			<DIV align=center>
-				<table width="100%" border="0" cellspacing="0" cellpadding="0">
-					<tr>
-						<td
-							background="/personbank/HttpProxy?URL=/midserv/images/pageTitle.gif&dse_sessionId=<%=dse_sessionId%>"
-							class="pageTitle">
-							&nbsp;&nbsp;签 约 信 息 确 认
-						</td>
-						<td rowspan="2" align="right" valign="top">
-							&nbsp;
-						</td>
+			<div class="indent">
+				<script language=JavaScript src="/personbank/js/writeNewActivxObjectForProxy.js"></script>
+				<table width="100%" align="center" cellpadding="1" cellspacing="1" class="tab">
+					<tr align="left"> 
+						<td class="tab_title">签 约 信 息 确 认</td>
 					</tr>
-					<tr>
-						<td>
-							<img
-								src="/personbank/HttpProxy?URL=/midserv/images/xianb.gif&dse_sessionId=<%=dse_sessionId%>"
-								width="100" height="20">
-						</td>
-					</tr>
-				</table>
+				<script language=JavaScript> writeNewCommitActivxObject('/personbank')</script>	
 				<FORM action="/personbank/HttpProxy" method=post name="f1">
-					<input type="hidden" name="dse_sessionId"
-						value="<%=dse_sessionId%>">
+					<input type="hidden" name="dse_sessionId"	value="<%=dse_sessionId%>">
 					<input type="hidden" name="URL" value="/midserv/kongZhongChongZhi5.jsp">
 					<input type="hidden" name=biz_id value="<%=biz_id %>">
 					<input type="hidden" name=step_id value="1">
-					<input type="hidden" name="password"/>
+					<input type="hidden" name="bocomPwd"/>
 					<input type="hidden" name=IDTyp value="<%=MessManTool.changeChar(request.getParameter("IDTyp")) %>">
-					<table border="0" cellspacing="2" cellpadding="0" align="center"
-						width="78%">
-						<tr>
+					
+						<tr class="tab_tr">
 							<td width="50%" align="right" height="22" class="InputTip">
 								用户姓名:
 							</td>
@@ -105,7 +98,7 @@
 								<%=MessManTool.changeChar(request.getParameter("cust_name"))%>
 							</td>
 						</tr>
-						<tr>
+						<tr class="tab_tr">
 							<td width="50%" align="right" height="22" class="InputTip">
 								用户身份证:
 							</td>
@@ -114,7 +107,7 @@
 								<%=MessManTool.changeChar(request.getParameter("paper_no"))%>
 							</td>
 						</tr>
-						<tr>
+						<tr class="tab_tr">
 							<td width="50%" align="right" height="22" class="InputTip">
 								性别:
 							</td>
@@ -132,7 +125,7 @@
 								<%=sex_code_name %>
 							</td>
 						</tr>
-						<tr>
+						<tr class="tab_tr">
 							<td width="50%" align="right" height="22" class="InputTip">
 								手机号码:
 							</td>
@@ -141,7 +134,7 @@
 								<%=MessManTool.changeChar(request.getParameter("mobile_no")) %>
 							</td>
 						</tr>
-						<tr>
+						<tr class="tab_tr">
 							<td width="50%" align="right" height="22" class="InputTip">
 								羊城通卡号:
 							</td>
@@ -150,36 +143,35 @@
 								<%=MessManTool.changeChar(request.getParameter("card1")) %>
 							</td>
 						</tr>
-						<tr>
+						<tr class="tab_tr">
 							<td align="right" height="22" class="InputTip">
 								交易密码:
 							</td>
-							<td align="left" height="22" class="InputTip">
-<SCRIPT language=JavaScript> writePwdActivxObjectLenClass('safeInput1','safeInput1','','password',6,6,'20','153','/ZomnYmq1MnNjizoVo2E7bjgVAr2ePAWzY4s6FaNhO34UlGH/zfcB/2aJp2JqtTJWxCKiMnQswZhMfJzDfHD8w==')</SCRIPT>
-							</td>
+							<td class="InputTip"><SCRIPT language=JavaScript> writeNewPwdActivxObjectLenClass ('safeInput1','safeInput1','/personbank/','bocomPwd',20,6,'20','153','<%=dse_sessionId%>')</SCRIPT></td>  
+							<!--td align="left" height="22" class="InputTip"><SCRIPT language=JavaScript> writePwdActivxObjectLenClass('safeInput1','safeInput1','','password',6,6,'20','153','/ZomnYmq1MnNjizoVo2E7bjgVAr2ePAWzY4s6FaNhO34UlGH/zfcB/2aJp2JqtTJWxCKiMnQswZhMfJzDfHD8w==')</SCRIPT>
+							</td-->
 						</tr>
 						<%if(loginType.equals("0")){ %>
-						<tr>
-							<td align="right" height="22" class="InputTip">
-								动态密码:<%=dynamicCode%>
-							</td>
+						<tr class="tab_tr">
+							<td width="35%" align="center" class="InputTip">动态密码</td>
+							<!--td align="right" height="22" class="InputTip">	动态密码:</td-->
 							<td align="left" height="22" class="InputTip">
 								<input type="text" name="dynamicCode" size="6" maxlength="6" onkeypress="onlyMunNoPointer();">
 							</td>
-						</tr>
+						</tr class="tab_tr">
 						<%} %>
-					</table>
-				</FORM>
-				<table>
-					<tr>
-						<td>
+					
+					<tr class="tab_result">
+						<td align="center" colspan="3">
 							<input type="button" onclick="tj1();" value="确 定" class="button_bg">
-							<input type="button" onclick="window.history.back();" value="返 回"
-								class="button_bg">
+							<input type="button" onclick="window.history.back();" value="返 回"	class="button_bg">
 							<input type="button" onclick="tj2();" value="放弃" class="button_bg">
 						</td>
 					</tr>
-				</table>
+				
+					</table>
+				</FORM>
+				
 			</DIV>
 		</center>
 	</body>

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Domain ConfigurationVersion="8.1.3.0" Name="midserv">
+    <Server ListenAddress="" ListenPort="7001" Name="myserver"
+        NativeIOEnabled="true" ReliableDeliveryPolicy="RMDefaultPolicy" ServerVersion="8.1.3.0">
+        <SSL Enabled="false" HostnameVerificationIgnored="false"
+            IdentityAndTrustLocations="KeyStores" Name="myserver"/>
+    </Server>
+    <JMSFileStore Directory="rmfilestore" Name="FileStore"/>
+    <WSReliableDeliveryPolicy DefaultRetryCount="10"
+        DefaultTimeToLive="60000" Name="RMDefaultPolicy" Store="FileStore"/>
+    <Security Name="midserv" PasswordPolicy="wl_default_password_policy"
+        Realm="wl_default_realm" RealmSetup="true"/>
+    <EmbeddedLDAP
+        Credential="{3DES}Ml5zvl8MrtAM+UoirELzN/zA/M+okc9FPmedHrlyfo4=" Name="midserv"/>
+    <SecurityConfiguration
+        Credential="{3DES}ZlqpT16gWTpVr6dw4F8OFzOjOX/KVisScPn1IuqDnIbKb7N+PfOZLGWtBW7GZBY+Nap/a0M45Nf9fjORyWVE6Ki6cymiC+EY"
+        Name="midserv" RealmBootStrapVersion="1"/>
+    <Realm FileRealm="wl_default_file_realm" Name="wl_default_realm"/>
+    <FileRealm Name="wl_default_file_realm"/>
+    <PasswordPolicy Name="wl_default_password_policy"/>
+    <JMSServer Name="WSStoreForwardInternalJMSServermyserver"
+        Store="FileStore" Targets="myserver">
+        <JMSQueue CreationTime="1167054616062"
+            JNDIName="jms.internal.queue.WSStoreForwardQueue"
+            JNDINameReplicated="false" Name="WSInternaljms.internal.queue.WSStoreForwardQueuemyserver"/>
+        <JMSQueue CreationTime="1167054616343"
+            JNDIName="jms.internal.queue.WSDupsEliminationHistoryQueue"
+            JNDINameReplicated="false" Name="WSInternaljms.internal.queue.WSDupsEliminationHistoryQueuemyserver"/>
+    </JMSServer>
+</Domain>

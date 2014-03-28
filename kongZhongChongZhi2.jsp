@@ -8,6 +8,12 @@
 	if (biz_id.equals("") ) {
 		System.out.println("传入参数不正确");
 	}
+
+  String cssFileName = request.getParameter("cssFileName");//获取客户当前使用的CSS样式
+	if(cssFileName ==null){
+		cssFileName = "skin.css";
+	}		
+	
 %>
 <!-------------------------------------------------------------------
                           标准JavaScript库引用
@@ -24,14 +30,9 @@
 ---------------------------------------------------------------------->
 <html>
 	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=GBK">
 		<title>交通银行网上服务</title>
-		<link rel="stylesheet"
-			href="/personbank/HttpProxy?URL=/midserv/css/personbank.css&dse_sessionId=<%=dse_sessionId%>">
-		<link rel="stylesheet"
-			href="/personbank/HttpProxy?URL=/midserv/css/midserv.css&dse_sessionId=<%=dse_sessionId%>">
-		<link href="/personbank/css/csspt.css" rel="stylesheet"
-			type="text/css">
-		<link href="/personbank/css/content.css" rel="stylesheet" type="text/css">
+		<link rel="stylesheet" type="text/css" href="/personbank/css/<%=cssFileName%>">
 		<script type="text/javascript">
 			var clickBoolean=true;
 			function tj2(){
@@ -44,42 +45,25 @@
 	</head>
 	
 
-	<body leftmargin="0" topmargin="0" oncontextmenu=self.event.returnValue=false onselectstart="return false">
+	<body leftmargin="0" topmargin="0" marginwidth="0" marginheight="0">
 		<center>
-			<DIV align=center>
-				<table width="100%" border="0" cellspacing="0" cellpadding="0">
-					<tr>
-						<td>
-							请您仔细阅读涉及的相关协议、章程和业务规则，有不解之处可向交行提出咨询，您应自行决定是否申请办理羊城通自动充值服务。
-						</td>
-						<td rowspan="2" align="right" valign="top">
-							&nbsp;
-						</td>
-					</tr>
-					<tr>
-						<td>
-							<img
-								src="/personbank/HttpProxy?URL=/midserv/images/xianb.gif&dse_sessionId=<%=dse_sessionId%>"
-								width="100" height="20">
-						</td>
-					</tr>
-				</table>
+			<div class="indent">
+				<table width="100%" align="center" cellpadding="1" cellspacing="1" class="tab">
+					<tr align="left">  
+						<td class="tab_title">请您仔细阅读涉及的相关协议、章程和业务规则，有不解之处可向交行提出咨询，您应自行决定是否申请办理羊城通自动充值服务。</td>  	   					
+  				</tr>
+					
 				<FORM action="/personbank/HttpProxy" method=post name="f1">
-					<input type="hidden" name="dse_sessionId"
-						value="<%=dse_sessionId%>">
+					<input type="hidden" name="dse_sessionId"	value="<%=dse_sessionId%>">
 					<input type="hidden" name="URL" value="/midserv/kongZhongChongZhi3.jsp">
 					<input type="hidden" name=biz_id value="<%=biz_id %>">
 					<input type="hidden" name=step_id value="2">
-					<table border="0" cellspacing="2" cellpadding="0" align="center"
-						width="85%">
-						<tr>
+					
+						<tr class="tab_tr">
 							<td align="left" height="22" width="8%" class="TableRow2">
 								<div style="margin-left: 5;margin-right: 5;margin-bottom: 10;margin-top: 15">
 <b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 羊城通自动充值服务协议</b>
 <BR>&nbsp;&nbsp;&nbsp;&nbsp;甲方（广州羊城通有限公司）特别提请乙方（自动充值服务使用客户）注意，在签订自动充值协议前，需要认真阅读《羊城通自动充值服务章程》(下称《章程》和《羊城通自动充值服务业务规则》（下称《业务规则》）等文件，并清楚知晓签订本协议后所享有的权利和应承担的义务。
 <BR>&nbsp;&nbsp;&nbsp;&nbsp;乙方清楚了解本协议以及与本协议有关的《章程》和《业务规则》(具体细则参见www.gzyct.com)后，同意就“羊城通自动充值服务”事宜，与甲方签订本协议。
@@ -151,16 +135,17 @@
 								</div>
 							</td>
 						</tr>
-					</table>
-				</FORM>
-				<table>
-					<tr>
-						<td>
-							<input type="button" onclick="tj2();" value="不同意" class="button_bg">
-							<input type="button" onclick="tj();" value="同 意" class="button_bg">
+
+					<tr class="tab_result">
+						<td align="center" colspan="3">
+							<input type="button" class="button_bg" onclick="tj2();" value="不同意" style={cursor:hand;}>
+							<input type="button" class="button_bg" onclick="tj();" value="同 意" style={cursor:hand;}>
 						</td>
 					</tr>
-				</table>
+					
+					</table>
+				</FORM>
+				
 			</DIV>
 		</center>
 	</body>

@@ -26,6 +26,12 @@
    String loginType = request.getParameter("loginType");
    GzLog log = new GzLog("c:/gzLog");
    log.Write("step1_dev:	loginType=["+loginType+"] 业务：i_biz_id=["+i_biz_id+"] i_step_id=[" + i_step_id + "]");  
+
+  String cssFileName = request.getParameter("cssFileName");//获取客户当前使用的CSS样式
+	if(cssFileName ==null){
+		cssFileName = "skin.css";
+	}		
+
 %>
 
 <!-------------------------------------------------------------------
@@ -48,24 +54,20 @@ out.print(midObjectView.writeCondition(i_biz_id,i_step_id));
 ---------------------------------------------------------------------->
 <html>
 <head>
+<meta http-equiv="Content-Type" content="text/html; charset=GBK">
 <title>交通银行网上服务</title>
 <script language="JavaScript" type="text/JavaScript">
 </script>
-<link rel="stylesheet" href="/personbank/HttpProxy?URL=/midserv/css/personbank.css&dse_sessionId=<%=dse_sessionId%>">
+<link rel="stylesheet" type="text/css" href="/personbank/css/<%=cssFileName%>">
 </head>
 
-<body leftmargin="0" topmargin="0">
+<body leftmargin="0" topmargin="0" marginwidth="0" marginheight="0">
 <CENTER>
-<DIV align=center>
-<table width="100%" border="0" cellspacing="0" cellpadding="0">
-  <tr>    	
-  	<td background="/personbank/HttpProxy?URL=/midserv/images/pageTitle.gif&dse_sessionId=<%=dse_sessionId%>" class="pageTitle"><%=midObjectView.get_biz_memo().trim()%>（第二步）</td>
-  	<td rowspan="2" align="right" valign="top">&nbsp;</td>
+<div class="indent">
+<table width="100%" align="center" cellpadding="1" cellspacing="1" class="tab">
+  <tr align="left">
+  	<td colspan="3" class="tab_title"><%=midObjectView.get_biz_memo().trim()%>（第二步）</td>
   </tr>
-  <tr>
-  	<td><img src="/personbank/HttpProxy?URL=/midserv/images/xianb.gif&dse_sessionId=<%=dse_sessionId%>" width="100" height="20"></td>
-  </tr>
-</table>
 
 <FORM action="/personbank/HttpProxy" method=post name="form1">
 <input type="hidden" name="dse_sessionId" value="<%=dse_sessionId%>">
@@ -88,12 +90,12 @@ else
 <input type="hidden" name="biz_id" value="<%=midObjectView.get_biz_id()%>">
 <input type="hidden" name="biz_no" value="<%=midObjectView.get_biz_no().trim()%>">
 <input type="hidden" name="step_id" value="<%=i_step_id+1%>">
-<table border="0" cellspacing="2" cellpadding="0" align="center" width="50%" >
+
 <%
 log.Write("step1_dev:	3333"); 
 ResultSet rs = midObjectStepView.getStepViewNotHidByBizIdAndStepId(i_biz_id,i_step_id);
    while (rs.next()) { %>
-  <tr>
+  <tr class="tab_tr">
      <td width="20%" align="center" height="22" class="InputTip"><%=rs.getString("input_lable").trim()%>：</td>
      <td width="30%" align="left" height="22" class="InputTip"><input type="<%=rs.getString("input_type").trim()%>" name="<%=rs.getString("input_name").trim()%>" size="<%=rs.getInt("input_size")%>" value="<%=rs.getString("input_value").trim()%>"></td>
   </tr> 
@@ -103,11 +105,16 @@ log.Write("step1_dev:	4444");
 	rs.close();
 	midObjectStepView.releaseDBConnection();
 %>
+
+<tr class="tab_result">
+	<td align="center" colspan="3">
+		<input type="submit" class="button_bg" name="Submit" value="提交">
+    <input type="reset" class="button_bg" name="Submit2" value="重填">
+  	<input type="button" onclick="window.history.back();" value="返回" class="button_bg">
+	</td>
+</tr>
 </table>
-<br>
-   <input type="submit" class="IN" name="Submit" value="提交">
-   <input type="reset" class="IN" name="Submit2" value="重填">
-<br>
+
 <br>
 <p>备注：<%=midObjectView.get_biz_detail().trim()%></p>
 </FORM>

@@ -9,6 +9,11 @@
 	String dse_sessionId = MessManTool.changeChar(request.getParameter("dse_sessionId"));//获取dse_sessionId
 	String biz_id=MessManTool.changeChar(request.getParameter("biz_id"));
 	String step_id = MessManTool.changeChar(request.getParameter("step_id"));
+	
+  String cssFileName = request.getParameter("cssFileName");//获取客户当前使用的CSS样式
+	if(cssFileName ==null){
+		cssFileName = "skin.css";
+	}		
 %>
 
 <!-------------------------------------------------------------------
@@ -25,43 +30,26 @@
 ---------------------------------------------------------------------->
 <html>
 	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=GBK">
 		<title>交通银行网上服务</title>
-		<link rel="stylesheet"
-			href="/personbank/HttpProxy?URL=/midserv/css/personbank.css&dse_sessionId=<%=dse_sessionId%>">
+		<link rel="stylesheet" type="text/css" href="/personbank/css/<%=cssFileName%>">
 	</head>
 
-	<body leftmargin="0" topmargin="0" oncontextmenu=self.event.returnValue=false onselectstart="return false">
+	<body leftmargin="0" topmargin="0" marginwidth="0" marginheight="0">
 		<center>
-			<DIV align=center>
-				<table width="100%" border="0" cellspacing="0" cellpadding="0">
-					<tr>
-						<td
-							background="/personbank/HttpProxy?URL=/midserv/images/pageTitle.gif&dse_sessionId=<%=dse_sessionId%>"
-							class="pageTitle">
-							&nbsp;&nbsp;请 选 择 对 应 的 子 功 能
-						</td>
-						<td rowspan="2" align="right" valign="top">
-							&nbsp;
-						</td>
+			<div class="indent">
+				<table width="100%" align="center" cellpadding="1" cellspacing="1" class="tab">
+					<tr align="left"> 
+						<td class="tab_title">请 选 择 对 应 的 子 功 能</td>
 					</tr>
-					<tr>
-						<td>
-							<img
-								src="/personbank/HttpProxy?URL=/midserv/images/xianb.gif&dse_sessionId=<%=dse_sessionId%>"
-								width="100" height="20">
-						</td>
-					</tr>
-				</table>
+					
 				<FORM action="/personbank/HttpProxy" method=post name="f1">
-					<input type="hidden" name="dse_sessionId"
-						value="<%=dse_sessionId%>">
+					<input type="hidden" name="dse_sessionId"	value="<%=dse_sessionId%>">
 					<input type="hidden" name="URL" value="/midserv/kongZhongChongZhi1.jsp">
 					<input type="hidden" name=biz_id value="<%=biz_id %>">
 					<input type="hidden" name=step_id value="2">
-					<table border="0" cellspacing="2" cellpadding="0" align="center"
-						width="50%">
-						<tr>
-							<td width="50%" align="center" height="22" class="InputTip">
+					<tr class="tab_tr">
+							<td width="50%" align="center" class="InputTip">
 								<A
 									onClick="
      this.document.f1.URL.value='/midserv/kongZhongChongZhi1.jsp';
@@ -69,12 +57,11 @@
      this.document.f1.submit();
      return false;
      "
-									HREF=""><font color="blue">签约管理
-								</font>
+									HREF="">签约管理
 								</A>
 							</td>
 						</tr>
-						<tr>
+						<tr class="tab_tr" >
 							<td width="50%" align="center" height="22" class="InputTip">
 								<A
 									onClick="
@@ -83,10 +70,15 @@
      this.document.f1.submit();
      return false;
      "
-									HREF=""><font color="blue">充值记录查询</font>
+									HREF="">充值记录查询
 								</A>
 							</td>
 						</tr>
+						<tr class="tab_result">
+							<td align="center" >
+								<input type="button" class="button_bg" onclick="window.history.back();" value="返 回">
+							</td>
+						</tr>	
 					</table>
 				</FORM>
 			</DIV>

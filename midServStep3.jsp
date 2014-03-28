@@ -9,7 +9,6 @@
 <%@ page import="com.bocom.midserv.base.*" %>
 <%@ page import="com.bocom.midserv.web.*" %>
 <%@ page import="com.bocom.midserv.gz.*" %>
-<%@ page import="com.bocom.eb.des.EBDES" %>
 
 <% 
    int		i_step_id	= Integer.parseInt(request.getParameter("step_id").trim());
@@ -24,12 +23,11 @@
    if (midObjectView.getMidObjectView(i_biz_id) != true) 
    	System.exit(1);
    MidObjectCtl midObjectCtl = new MidObjectCtl();
-   //midObjectCtl.preInvokeNotXML(i_biz_id,i_step_id);
    
    midObjectCtl.preInvokeNotXML(request,i_biz_id,i_step_id-1);
 
    //请在设立配置分行网关的地址（字符型）和监听端口（整型）
-   midObjectCtl.invokeConnectNotXML("182.53.15.211",3555);
+   midObjectCtl.invokeConnectNotXML("182.53.4.118",3555);
 
    midObjectCtl.postInvokeNotXML();
    
@@ -38,11 +36,11 @@
    int i_max_step_id = midObjectStepView.getMaxStepId(i_biz_id);
 
    i_max_step_id = i_max_step_id + 2;
-  
+ 
    String dse_sessionId = request.getParameter("dse_sessionId");//获取dse_sessionId
 
-   String passWord = request.getParameter("passWord");
-   
+	 String bocomPwd= request.getParameter("bocomPwd");//加密密码
+
    String remoteIp = request.getParameter("remoteIp");
    
    String loginType = request.getParameter("loginType");//传送登陆类别 0－注册用户(手机版) 1－证书用户 2－大众用户
@@ -50,6 +48,7 @@
    int ltFeeType = 9 ;
    String ltBusiType = "00" ;
    String ltArefldandBusId = "" ;
+   
    if ( i_biz_id == 8 )
    {
 		ltFeeType = Integer.parseInt( request.getParameter("feeType").trim() ) ; //联通费用类型 1-预付费 0-缴欠费   
@@ -82,6 +81,11 @@
 		
 	log.Write( "isVS = [" + isVS + "]" );		
 	log.Write( "stepCount=["+stepCount+"] MarchFlag=["+MarchFlag+"]" );		
+   
+  String cssFileName = request.getParameter("cssFileName");//获取客户当前使用的CSS样式
+	if(cssFileName ==null){
+		cssFileName = "skin.css";	
+	}
 %>
 
 <!-------------------------------------------------------------------
@@ -117,12 +121,11 @@ function go(){
 <meta http-equiv="cache-control" content="no-cache">
 <meta http-equiv="expires" content="0">
 <meta http-equiv="Content-Type" content="text/html; charset=gb2312">
-<!--link rel="stylesheet" type="text/css" href="/personbank/HttpProxy?URL=/midserv/css/csspt.css&dse_sessionId=<%=dse_sessionId%>"-->   
-<link rel="stylesheet" href="/personbank/HttpProxy?URL=/midserv/css/personbank.css&dse_sessionId=<%=dse_sessionId%>">
+<link rel="stylesheet" type="text/css" href="/personbank/css/<%=cssFileName%>">
+<script language="JavaScript"	src="/personbank/HttpProxy?URL=/midserv/js/common.js&dse_sessionId=<%=dse_sessionId%>"></script>
+
 <%--签名增加部分1 BEGIN--%>
-<script language=JavaScript src="/personbank/js/public.js"></script><%--引用总行端公用JS，不需要引用HttpProxy--%>
-<script language=JavaScript src="/personbank/js/writeActivxObject.js"></script>
-<script language=JavaScript> writeCommitActivxObject('/personbank/')</script>
+<script language="JavaScript" src="/personbank/js/public.js"></script><%--引用总行端公用JS，不需要引用HttpProxy--%>
 <script language=JavaScript> writeSignActivxObject('/personbank/')</script>
 <%--签名增加部分1 END--%>
 
@@ -143,13 +146,15 @@ function beforeSubmit0()
   {
 		if( biz_id == 7 )
 		{
-			document.form1.passWord.value = '<%=midObjectCtl.get_pswd_value()%>' ;
+			document.form1.bocomPwd.value = '<%=midObjectCtl.get_pswd_value()%>' ;
+			//document.form1.passWord.value = '<%=midObjectCtl.get_pswd_value()%>' ;
 			//alert( "passWord:" + document.form1.passWord.value );
 			//return false;
 		}
 		if( biz_id == 8 )
 		{
-			document.form1.passWord.value = "000" + document.form1.feeType.value + document.form1.busiType.value ;
+			document.form1.bocomPwd.value = "000" + document.form1.feeType.value + document.form1.busiType.value ;
+			//document.form1.passWord.value = "000" + document.form1.feeType.value + document.form1.busiType.value ;
 			//alert( "pass:" + document.form1.passWord.value + " feeType:" + document.form1.feeType.value + " busiType:" + document.form1.busiType.value );
 			//return false ;
 		}  	  	
@@ -217,26 +222,22 @@ function beforeSubmit1()
 <style type="text/css"></style>
 
 </head> 
-<body leftmargin="0" topmargin="0" oncontextmenu=self.event.returnValue=false onselectstart="return false">
+<body leftmargin="0" topmargin="0" marginwidth="0" marginheight="0">
 <center>
-<DIV align=center>
-<table width="100%" border="0" cellspacing="0" cellpadding="0">
-  <tr>    	
-    <td background="/personbank/HttpProxy?URL=/midserv/images/pageTitle.gif&dse_sessionId=<%=dse_sessionId%>" class="pageTitle"><%=midObjectView.get_biz_memo().trim()%>（第三步）</td>
-    <td rowspan="2" align="right" valign="top">&nbsp;</td>
+<div class="indent">
+<script language=JavaScript src="/personbank/js/writeNewActivxObjectForProxy.js"></script>
+<table width="100%" align="center" cellpadding="1" cellspacing="1" class="tab">
+  <tr align="left">    	
+    <td colspan="3" class="tab_title"><%=midObjectView.get_biz_memo().trim()%>（第三步）</td>
   </tr>
-  <tr>
-    <td><img src="/personbank/HttpProxy?URL=/midserv/images/xianb.gif&dse_sessionId=<%=dse_sessionId%>" width="100" height="20"></td>
-  </tr>
-</table>
-
+<script language=JavaScript> writeNewCommitActivxObject('/personbank')</script>	
 <FORM action="/personbank/HttpProxy" method=post name="form1">
   <input type="hidden" name="dse_sessionId" value="<%=dse_sessionId%>">
   <input type="hidden" name="URL" value="/midserv/midServstep3.jsp">
   <input type="hidden" name="biz_id" value="<%=midObjectView.get_biz_id()%>">
   <input type="hidden" name="biz_no" value="<%=midObjectView.get_biz_no().trim()%>">
   <input type="hidden" name="CDNO" value="<%=cardNo%>">
-  <input type="hidden" name="passWord">
+  <input type="hidden" name="bocomPwd">
 	<input type="hidden" name="feeType" value="<%=ltFeeType%>">
 	<input type="hidden" name="busiType" value="<%=ltBusiType%>">
  	<input type="hidden" name="mobPhone" value="">
@@ -256,32 +257,36 @@ function beforeSubmit1()
 %>
 		<%=midObjectCtl.get_hidden_input_buff()%>     
 <%}%>
-  <table border="0" cellspacing="2" cellpadding="0" align="center" width="50%" >
-    <tr><td class="InputTip"><%=midObjectCtl.get_display_buff()%></td></tr>
-	</table>
+
+    <tr class="tab_tr">
+    	<td width="35%" align="center" class="InputTip">提示信息</td>
+    	<td width="65%" align="left" class="InputTip"><%=midObjectCtl.get_display_buff()%></td>
+    </tr>
+
 <%if ( midObjectCtl.get_mgid_value().equals("000000") ){
 %>
-	<table border="0" cellspacing="2" cellpadding="0" align="center" width="50%" >
+	
 <%
 		ResultSet rs = midObjectStepView.getStepViewNotHidByBizIdAndStepId(i_biz_id,i_step_id);
     while( rs.next() )
     {   
       if ( midObjectCtl.checkHidden(rs.getString("input_name").trim()) != true ) 
       {
-				if( ( i_biz_id==2 || ( i_biz_id==8 && ltFeeType==1 ) || ( i_biz_id==20 && ltFeeType==1 ) || i_biz_id==23) 
+				if( ( i_biz_id==2 || ( i_biz_id==8 && ltFeeType==1 ) || ( i_biz_id==20 && ltFeeType==1 ) || i_biz_id==23 || i_biz_id==26 || i_biz_id==28) 
 				&& rs.getString("input_name").trim().equals("AMT1") )//小灵通或联通业务充值金额选择
         {
         	if ( request.getParameter("AMT1") == null )
         	{
 %>	 
 		<input type="hidden" name="AMT1" value='000000000005000'>
-		<tr>
-			<td width="30%" align="middle" height="22" class="InputTip">充值金额</td>
-			<td width="70%" align="left" height="22" class="InputTip">
+		<tr class="tab_tr">
+			<td width="35%" align="middle" height="22" class="InputTip">充值金额</td>
+			<td width="65%" align="left" height="22" class="InputTip">
 				<input onClick="form1.AMT1.value='000000000005000';" type="radio" name="radiobutton" checked="true">50 元<br>
 				<input onClick="form1.AMT1.value='000000000010000';" type="radio" name="radiobutton">100 元<br>
 				<input onClick="form1.AMT1.value='000000000015000';" type="radio" name="radiobutton">150 元<br>
 				<input onClick="form1.AMT1.value='000000000020000';" type="radio" name="radiobutton">200 元<br>
+				<input onClick="form1.AMT1.value='000000000050000';" type="radio" name="radiobutton">500 元<br>
 			</td>
 		</tr>
 <%
@@ -289,9 +294,9 @@ function beforeSubmit1()
 					else
 					{
 %>					
-		<tr>
-			<td width="30%" align="middle" height="22" class="InputTip">充值金额</td>
-			<td width="70%" align="left" height="22" class="InputTip"><%=Integer.parseInt(request.getParameter("AMT1"))/100%>元</td>
+		<tr class="tab_tr">
+			<td width="35%" align="middle" height="22" class="InputTip">充值金额</td>
+			<td width="65%" align="left" height="22" class="InputTip"><%=Integer.parseInt(request.getParameter("AMT1"))/100%>元</td>
 		</tr>
 		<input type="hidden" name="AMT1" value="<%=request.getParameter("AMT1")%>">
 <%					
@@ -309,7 +314,7 @@ function beforeSubmit1()
 					else
 					{ 
 %>
-		<tr>
+		<tr class="tab_tr">
 			<td width="20%" align="center" height="22" class="InputTip"><%=rs.getString("input_lable").trim()%>：</td>
 			<td width="30%" align="left" height="22" class="InputTip"><input type="<%=rs.getString("input_type").trim()%>" name="<%=rs.getString("input_name").trim()%>" size="<%=rs.getInt("input_size")%>"  value="<%=rs.getString("input_value").trim()%>"></td>
 		</tr> 
@@ -337,9 +342,9 @@ function beforeSubmit1()
     if ( stepCount == 2 )
     {
 %>
-     <tr>     
-			<td height="27" align="center" class="InputTip">交易密码</td>
-			<td class="InputTip"><SCRIPT language=JavaScript> writePwdActivxObjectLenClass('safeInput1','safeInput1','','passWord',6,6,'20','120')</SCRIPT></td>  
+     <tr class="tab_tr">     
+			<td width="35%" align="center" class="InputTip">交易密码</td>
+			<td width="65%" align="left" class="InputTip"><SCRIPT language=JavaScript> writeNewPwdActivxObjectLenClass ('safeInput1','safeInput1','/personbank/','bocomPwd',20,6,'20','153','<%=dse_sessionId%>')</SCRIPT></td>  
 		</tr>   
 <%	
 		}
@@ -365,27 +370,31 @@ function beforeSubmit1()
     	if ( i_step_id  == 2 )
     	{ 
 %>
-	<br>
-	<input type="button" onclick="javascript:beforeSubmit0();" value="确认缴费" style={cursor:hand;}>
-	<input type="reset" class="IN" name="Submit2" value="返回" onclick="javascript:history.back()" >
-	<br>
+<tr class="tab_result">
+	<td align="center" colspan="2">
+		<input type="button" class="button_bg" onclick="javascript:beforeSubmit0();" value="确认缴费" style={cursor:hand;}>
+		<input type="reset" class="button_bg" name="Submit2" value="返回" onclick="javascript:history.back()" >
+	</td>
+</tr>		
 <%
 			}
 			else
 			{
 %>			
-	<br>
-	<input type="button" onclick="javascript:beforeSubmit1();" value="提交" style={cursor:hand;}>
-	<input type="reset" class="IN" name="Submit2" value="重填">
-	<input type="button" class="IN" name="Submit3" value="返回" onclick="javascript:history.back()" >
-	<br>			
+<tr class="tab_result">
+	<td align="center" colspan="3">
+		<input type="button" class="button_bg" onclick="javascript:beforeSubmit1();" value="提交" style={cursor:hand;}>
+		<input type="reset" class="button_bg" name="Submit2" value="重填">
+		<input type="button" class="button_bg" name="Submit3" value="返回" onclick="javascript:history.back()" >
+	</td>
+</tr>				
 <%
 			}
     }
   } if( i_biz_id == 30 )
   {
 %>
-  <input type="button" class="IN" name="Submit4" value="返回" onclick="javascript:history.back()" >
+  <input type="button" class="button_bg" name="Submit4" value="返回" onclick="javascript:history.back()" >
   <% } %>  
 </FORM>
 <form name="form2" method="post" action="/personbank/HttpProxy">

@@ -34,6 +34,11 @@
 	pageTools.setUrl("/personbank/HttpProxy?dse_sessionId="+dse_sessionId+"&URL=/midserv/yinLvTong2.jsp&biz_id="+biz_id);
 	int pageSize = pageTools.getPageSize();
 	String pagegetRoll = pageTools.pagegetRoll();
+	
+  String cssFileName = request.getParameter("cssFileName");//获取客户当前使用的CSS样式
+	if(cssFileName ==null){
+		cssFileName = "skin.css";
+	}		
 %>
 <!-------------------------------------------------------------------
                           标准JavaScript库引用
@@ -50,14 +55,9 @@
 ---------------------------------------------------------------------->
 <html>
 	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=GBK">
 		<title>交通银行网上服务</title>
-		<link rel="stylesheet"
-			href="/personbank/HttpProxy?URL=/midserv/css/personbank.css&dse_sessionId=<%=dse_sessionId%>">
-		<link rel="stylesheet"
-			href="/personbank/HttpProxy?URL=/midserv/css/midserv.css&dse_sessionId=<%=dse_sessionId%>">
-		<link href="/personbank/css/csspt.css" rel="stylesheet"
-			type="text/css">
-		<link href="/personbank/css/content.css" rel="stylesheet" type="text/css">
+		<link rel="stylesheet" type="text/css" href="/personbank/css/<%=cssFileName%>">
 		<script type="text/javascript">
 			var clickBoolean=true;
 			function tj1(){
@@ -91,49 +91,33 @@
 	</head>
 	
 
-	<body leftmargin="0" topmargin="0" >
-		<center>
-			<DIV align=center>
-				<table width="100%" border="0" cellspacing="0" cellpadding="0">
-					<tr>
-						<td
-							background="/personbank/HttpProxy?URL=/midserv/images/pageTitle.gif&dse_sessionId=<%=dse_sessionId%>"
-							class="pageTitle">
-							&nbsp;&nbsp;签 约 管 理
-						</td>
-						<td rowspan="2" align="right" valign="top">
-							&nbsp;
-						</td>
-					</tr>
-					<tr>
-						<td>
-							<img
-								src="/personbank/HttpProxy?URL=/midserv/images/xianb.gif&dse_sessionId=<%=dse_sessionId%>"
-								width="100" height="20">
-						</td>
-					</tr>
-				</table>
+<body leftmargin="0" topmargin="0" marginwidth="0" marginheight="0">
+	<center>
+		<div class="indent">
+			<table width="100%" align="center" cellpadding="1" cellspacing="1" class="tab">
+  			<tr align="left"> 
+					<td colspan="3" class="tab_title">请 选 择 代 理 业 务 种 类</td>
+				</tr>
+			
 				<FORM action="/personbank/HttpProxy" method=post name="f1">
-					<input type="hidden" name="dse_sessionId"
-						value="<%=dse_sessionId%>">
+					<input type="hidden" name="dse_sessionId"	value="<%=dse_sessionId%>">
 					<input type="hidden" name="URL" value="/midserv/kongZhongChongZhi6.jsp">
 					<input type="hidden" name=biz_id value="<%=biz_id %>">
 					<input type="hidden" name=step_id value="3">
 					<input type="hidden" name=sightName value="">
-					<table border="0" cellspacing="2" cellpadding="0" align="center"
-						width="65%">
-						<tr onclick="selectrow(this);" style="cursor:hand;" >
-							<td align="center" height="22"  class="TableRow2">
+					
+						<tr class="tab_tr" onclick="selectrow(this);" style="cursor:hand;" >
+							<td align="center" width="10%" height="22"  class="TableRow2">
 								选择
 							</td>
-							<td align="left" height="22"  class="TableRow2">
+							<td align="left" width="50%" height="22"  class="TableRow2">
 								羊城通卡号
 							</td>
 <%--							<td align="left" height="22"  class="TableRow2">
 								扣款方式
 							</td>--%>
 						
-							<td align="left" height="22"  class="TableRow2">
+							<td align="left" width="40%" height="22"  class="TableRow2">
 								签约日期
 							</td>
 						</tr>
@@ -144,7 +128,7 @@
 							if ((i >= (currPage - 1) * pageSize)&& (i < currPage * pageSize)) {
 								HashMap map = (HashMap) list.get(i);
 						%>
-						<tr onclick="selectrow(this);" style="cursor:hand;" >
+						<tr class="tab_tr" onclick="selectrow(this);" style="cursor:hand;" >
 							<td align="center" height="22"  class="<%=(i+1)%2==1?"TableRow1":"TableRow2" %>">
 							<%
 								String card1=MessManTool.changeChar(request.getParameter("card1"));
@@ -183,27 +167,27 @@
 								}
 							}
 						%>
-						<tr>
+						<tr class="tab_tr">
 							<td align="left" height="11" class="InputTip" colspan="6">
 								&nbsp;
 							</td>
 						</tr>
-						<tr>
+						<tr class="tab_tr">
 							<td align="left" height="22" class="InputTip" colspan="6">
 								<%=pagegetRoll %>
 							</td>
 						</tr>
+							
+						<tr class="tab_result">
+							<td align="center" colspan="3">
+								<input type="button" class="button_bg" onclick="tj2();" value="新增签约" class="button_bg">
+								<input type="button" class="button_bg" onclick="tj1();" value="解 约" class="button_bg">
+								<input type="button" class="button_bg" onclick="window.history.back();" value="返回" class="button_bg">
+							</td>
+						</tr>
+
 					</table>
-				</FORM>
-				<table>
-					<tr>
-						<td>
-							<input type="button" onclick="tj2();" value="新增签约" class="button_bg">
-							<input type="button" onclick="tj1();" value="解 约" class="button_bg">
-							<input type="button" onclick="window.history.back();" value="返回" class="button_bg">
-						</td>
-					</tr>
-				</table>
+				</FORM>				
 			</DIV>
 		</center>
 	</body>

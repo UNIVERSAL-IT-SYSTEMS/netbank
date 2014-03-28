@@ -1,0 +1,20 @@
+@CHARSET "gbk";
+ 
+.TableRow1
+{
+	font-size: 12px;
+	font-family:Arial;
+	text-decoration: none;
+	color: #000000;
+	height:24;
+	background-color:#F2D6D5;
+}
+.TableRow2 
+{
+	font-size: 12px;
+	font-family:Arial;
+	text-decoration: none;
+	color: #000000;
+	height:24;
+	background-color:#E0CBCA;
+}

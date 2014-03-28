@@ -1,0 +1,11 @@
+midServStep1.jsp line 78 :
+
+  if(loginType.equals("0"))//手机版客户提交sndPass=1表示需校验动态密码
+  {
+%>  
+    <input type="hidden" name="sendPass" value="1">
+<%    
+  }
+  
+  
+  

@@ -56,8 +56,8 @@
 	String businessIp="182.53.1.6";
 	int businessPort=35850;
 	
-	String ipAddress = testIp;
-	int portNum = testPort;
+	String ipAddress = businessIp;
+	int portNum = businessPort;
 	
 	char errorFlag;
   
@@ -120,7 +120,7 @@
 				   hasAgree=true;	
 				
 				}
-			 else if(feedback.charAt(backLength-1)=='F'){
+			  else if(feedback.charAt(backLength-1)=='F'){
 			 		hasAgree=false;
 			 	}
 				
@@ -208,13 +208,13 @@
 							<td width="100%" align="center" class="InputTip">	
 								<A
 									onClick="
-     this.document.f1.URL.value='<%=web_url %>';
-     this.document.f1.biz_id.value='<%=biz_id %>';
-     this.document.f1.up_biz_id.value='<%=biz_id %>';
-     this.document.f1.step_id.value='1';
-     this.document.f1.biz_no.value='<%=biz_no %>';
-     this.document.f1.submit();
-     return false;"  HREF="">
+     document.f1.URL.value='<%=web_url %>';
+     document.f1.biz_id.value='<%=biz_id %>';
+     document.f1.up_biz_id.value='<%=biz_id %>';
+     document.f1.step_id.value='1';
+     document.f1.biz_no.value='<%=biz_no %>';
+     document.f1.submit();
+     return false;"  HREF="#1">
      							<%=biz_memo.trim() %>
 								</A>
 							</td>
@@ -249,8 +249,11 @@
 					<input type="hidden" name="up_biz_id" value="">
 					<input type="hidden" name="step_id" value="1">
 					<input type="hidden" name="biz_no" value="">
+					<input type="hidden" name="loginType" value="<%=loginType%>">
+					<input type="hidden" name="remoteIp" value="<%=remoteIp%>">					
 					<input type="hidden" name="URL" value="/midserv/midSelect2.jsp">
 		            <input type="hidden" name=cdno value="<%=cdno %>">
+					
 					<table id="table2" width="100%" align="center" cellpadding="1" cellspacing="1" class="tab">
 						<tr align="center"> 
 								<td class="tab_title">客 户 协 议 <br><br></td>
@@ -277,6 +280,11 @@
 							
 				
 				<%
+						
+						rs.close();
+						midObjectView.releaseDBConnection();
+						midSelectUtil.releaseDBConnection();
+						
 						} else if(canPass!=1){
 						rs.close();
 						midObjectView.releaseDBConnection();

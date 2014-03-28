@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Domain Name="midserv" ConfigurationVersion="8.1.3.0">
+    <Server Name="myserver" ListenAddress="" ListenPort="7001"
+        ReliableDeliveryPolicy="RMDefaultPolicy" NativeIOEnabled="true">
+        <SSL Name="myserver" Enabled="false" HostnameVerificationIgnored="false"/>
+    </Server>
+    <JMSFileStore Name="FileStore" Directory="rmfilestore"/>
+    <WSReliableDeliveryPolicy Name="RMDefaultPolicy" Store="FileStore"
+        DefaultRetryCount="10" DefaultTimeToLive="60000"/>
+</Domain>

@@ -7,12 +7,19 @@
 	String dse_sessionId = MessManTool.changeChar(request.getParameter("dse_sessionId"));//获取dse_sessionId	
 	GzLog log = new GzLog("c:/gzLog");
 	String step_id = MessManTool.changeChar(request.getParameter("step_id"));
+
+  String cssFileName = request.getParameter("cssFileName");//获取客户当前使用的CSS样式
+	if(cssFileName ==null){
+		cssFileName = "skin.css";
+	}					
 	
-	String password = MessManTool.changeChar(request.getParameter("password"));//加密密码
-	if(password.equals("")){
+	String bocomPwd = MessManTool.changeChar(request.getParameter("bocomPwd"));//加密密码
+	if(bocomPwd.equals("")){
 		System.out.println("交易密码为空");
 			AppParam.setParam(dse_sessionId+"midErr1","参数错误");
 			AppParam.setParam(dse_sessionId+"midErr2","交易密码为空");
+
+
 %>
 <script type="text/javascript">
 	window.location="/personbank/HttpProxy?URL=/midserv/midservError.jsp&dse_sessionId=<%=dse_sessionId%>";
@@ -72,7 +79,7 @@
 	}
 	String tmp = "";
 	String cdno = MessManTool.changeChar(request.getParameter("cardNo"));
-	String content = "biz_id,"+biz_id+"|biz_step_id,2|sign_flag,0|inst_no,交通银行|live_flag,1|tran_flag,1"
+	String content = "biz_id,"+biz_id+"|biz_step_id,2|TXNSRC,WE441|sign_flag,3|inst_no,交通银行|live_flag,1|tran_flag,1"
 	+"|bank_acc,"+cdno
 	+"|paper_no,"+MessManTool.changeChar(request.getParameter("IDTyp"))+MessManTool.changeChar(request.getParameter("paper_no"))
 	+"|cust_name,"+MessManTool.changeChar(request.getParameter("cust_name"))
@@ -83,7 +90,7 @@
 	+"|address,"+MessManTool.changeChar(request.getParameter("address"))
 	+"|email,"+MessManTool.changeChar(request.getParameter("email"))
 	+"|card1,"+card1
-	+"|PSWD,"+password 
+	+"|PSWD,"+bocomPwd 
 	+"|card2,|card3,|card4,|limite,000000005000"
 	+"|frequence,D001|";
 	MidServer midServer = new MidServer();
@@ -121,47 +128,26 @@
 
 <html>
 	<head>
+	  <meta http-equiv="Content-Type" content="text/html; charset=GBK">
 		<title>交通银行网上服务</title>
-		<link rel="stylesheet"
-			href="/personbank/HttpProxy?URL=/midserv/css/personbank.css&dse_sessionId=<%=dse_sessionId%>">
-		<link rel="stylesheet"
-			href="/personbank/HttpProxy?URL=/midserv/css/midserv.css&dse_sessionId=<%=dse_sessionId%>">
-		<link href="/personbank/css/csspt.css" rel="stylesheet"
-			type="text/css">
-		<link href="/personbank/css/content.css" rel="stylesheet" type="text/css">
+		<link rel="stylesheet" type="text/css" href="/personbank/css/<%=cssFileName%>">
 	</head>
 
-	<body leftmargin="0" topmargin="0" oncontextmenu=self.event.returnValue=false onselectstart="return false">
+	<body leftmargin="0" topmargin="0" marginwidth="0" marginheight="0">
 		<center>
 			<DIV align=center>
-				<table width="100%" border="0" cellspacing="0" cellpadding="0">
-					<tr>
-						<td
-							background="/personbank/HttpProxy?URL=/midserv/images/pageTitle.gif&dse_sessionId=<%=dse_sessionId%>"
-							class="pageTitle">
-							&nbsp;&nbsp;签约交易成功，具体信息如下：
-						</td>
-						<td rowspan="2" align="right" valign="top">
-							&nbsp;
-						</td>
+				<table width="100%" align="center" cellpadding="1" cellspacing="1" class="tab">
+					<tr align="left"> 
+						<td class="tab_title">签约交易成功，具体信息如下：</td>
 					</tr>
-					<tr>
-						<td>
-							<img
-								src="/personbank/HttpProxy?URL=/midserv/images/xianb.gif&dse_sessionId=<%=dse_sessionId%>"
-								width="100" height="20">
-						</td>
-					</tr>
-				</table>
-				<FORM action="/personbank/HttpProxy" method=post>
-					<input type="hidden" name="dse_sessionId"
-						value="<%=dse_sessionId%>">
+					
+				<FORM action="/personbank/HttpProxy" method=post name="f1">
+					<input type="hidden" name="dse_sessionId"	value="<%=dse_sessionId%>">
 					<input type="hidden" name="URL" value="/midserv/kongZhongChongZhi1.jsp">
 					<input type="hidden" name=biz_id value="<%=biz_id %>">
 					<input type="hidden" name=step_id value="1">
-					<table border="0" cellspacing="2" cellpadding="0" align="center"
-						width="78%">
-						<tr>
+					
+						<tr class="tab_tr">
 							<td width="50%" align="right" height="22" class="InputTip">
 								用户姓名:
 							</td>
@@ -169,7 +155,7 @@
 								<%=MessManTool.changeChar(request.getParameter("cust_name"))%>
 							</td>
 						</tr>
-						<tr>
+						<tr class="tab_tr">
 							<td width="50%" align="right" height="22" class="InputTip">
 								用户身份证:
 							</td>
@@ -177,7 +163,7 @@
 								<%=request.getParameter("paper_no")%>
 							</td>
 						</tr>
-						<tr>
+						<tr class="tab_tr">
 							<td width="50%" align="right" height="22" class="InputTip">
 								性别:
 							</td>
@@ -194,7 +180,7 @@
 								<%=sex_code_name %>
 							</td>
 						</tr>
-						<tr>
+						<tr class="tab_tr">
 							<td width="50%" align="right" height="22" class="InputTip">
 								手机号码:
 							</td>
@@ -202,7 +188,7 @@
 								<%=MessManTool.changeChar(request.getParameter("mobile_no")) %>
 							</td>
 						</tr>
-						<tr>
+						<tr class="tab_tr">
 							<td width="50%" align="right" height="22" class="InputTip">
 								羊城通卡号:
 							</td>
@@ -210,40 +196,26 @@
 								<%=MessManTool.changeChar(request.getParameter("card1")) %>
 							</td>
 						</tr>
+						
+						<tr class="tab_result">
+							<td align="center" colspan="2">
+								<input type="button" onclick="tj();" value="返回" class="button_bg">
+							</td>
+						</tr>
+						
 					</table>
 				</FORM>
-				<table>
-					<tr>
-						<td>
-							<input type="button" onclick="tj();" value="返回" class="button_bg">
-						</td>
-					</tr>
-				</table>
-				<br>
-				<br>
-				<br>
-				<br>
-				<table>
-					<tr>
-						<td rowspan="3">
-						温馨提示：
-						</td>
-						<td>
-						您的签约已经成功,请于第二至第七个工作日到市内各地铁入口处的
-						</td>
-					</tr>
-					<tr>
-						<td>
-							羊城通自动充值终端进行激活。完成后即可体验便捷的充值服务了。
-						</td>
-					</tr>
-					<tr>
-						<td>
-								如有疑问可咨询羊城通服务热线（020）87692005或交行客服95559。
-						</td>
-					</tr>
-				</table>
+
 			</DIV>
 		</center>
+		
+  	<div class="guide">
+  		<ul>温馨提示：
+  			  <li>*&nbsp;&nbsp;您的签约已经成功,请于七个工作日内到市内各地铁入口处的</li>
+  			  <li>*&nbsp;&nbsp;羊城通自动充值终端进行激活。完成后即可体验便捷的充值服务了。</li>
+  			  <li>*&nbsp;&nbsp;如有疑问可咨询羊城通服务热线（020）87692005或交行客服95559。</li>
+  		</ul>
+  	</div>	
+    					  	
 	</body>
 </html>

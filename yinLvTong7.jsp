@@ -38,6 +38,12 @@
 			+ biz_id);
 	int pageSize = pageTools.getPageSize();
 	String pagegetRoll = pageTools.pagegetRoll();
+
+	String cssFileName = request.getParameter("cssFileName");//获取客户当前使用的CSS样式
+	if(cssFileName ==null){
+		cssFileName = "skin.css";
+	}
+	
 %>
 <!-------------------------------------------------------------------
                           标准JavaScript库引用
@@ -56,15 +62,10 @@
 ---------------------------------------------------------------------->
 
 <html>
-	<head>
-		<title>交通银行网上服务</title>
-		<link rel="stylesheet"
-			href="/personbank/HttpProxy?URL=/midserv/css/personbank.css&dse_sessionId=<%=dse_sessionId%>">
-		<link rel="stylesheet"
-			href="/personbank/HttpProxy?URL=/midserv/css/midserv.css&dse_sessionId=<%=dse_sessionId%>">
-		<link href="/personbank/css/csspt.css" rel="stylesheet"
-			type="text/css">
-		<link href="/personbank/css/content.css" rel="stylesheet" type="text/css">
+	<meta http-equiv="Content-Type" content="text/html; charset=GBK">
+	<title>交通银行网上服务</title>
+	<head>	
+		<link rel="stylesheet" type="text/css" href="/personbank/css/<%=cssFileName%>">
 	</head>
 
 	<script type="text/javascript">
@@ -109,35 +110,19 @@
 	</script>
 
 
-	<body leftmargin="0" topmargin="0" oncontextmenu=self.event.returnValue=false onselectstart="return false">
+	<body leftmargin="0" topmargin="0" marginwidth="0" marginheight="0">
 		<center>
-			<DIV align=center>
-				<table width="100%" border="0" cellspacing="0" cellpadding="0">
-					<tr>
-						<td
-							background="/personbank/HttpProxy?URL=/midserv/images/pageTitle.gif&dse_sessionId=<%=dse_sessionId%>"
-							class="pageTitle">
-							&nbsp;&nbsp;交 易 历 史 
-						</td>
-						<td rowspan="2" align="right" valign="top">
-							&nbsp;
-						</td>
-					</tr>
-					<tr>
-						<td>
-							<img
-								src="/personbank/HttpProxy?URL=/midserv/images/xianb.gif&dse_sessionId=<%=dse_sessionId%>"
-								width="100" height="20">
-						</td>
-					</tr>
-				</table>
+			<div class="indent">
+				<table width="100%" align="center" cellpadding="1" cellspacing="1" class="tab">
+					<tr align="left"> 
+          	<td colspan="2" class="tab_title">交 易 历 史</td>
+        	</tr>
+
 				<FORM action="/personbank/HttpProxy" method=post name="f1">
-					<input type="hidden" name="dse_sessionId"
-						value="<%=dse_sessionId%>">
+					<input type="hidden" name="dse_sessionId"	value="<%=dse_sessionId%>">
 					<input type="hidden" name="URL" value="/midserv/midSelect.jsp">
-					<table border="0" cellspacing="2" cellpadding="0" align="center"
-						width="92%">
-						<tr onclick="selectrow(this);" style="cursor:hand;">
+					
+						<tr class="tab_tr" onclick="selectrow(this);" style="cursor:hand;">
 							<td align="left" height="22" class="TableRow2">
 								交易类型
 							</td>
@@ -181,7 +166,7 @@
 								if ((i >= (currPage - 1) * pageSize) && (i < currPage * pageSize)) {
 									HashMap map = (HashMap) list.get(i);
 						%>
-						<tr>
+						<tr class="tab_tr">
 							<td align="left" height="22"  class="<%=(i + 1) % 2 == 1 ? "TableRow1" : "TableRow2"%>">
 								<%
 									String lx=(String)map.get("param2");
@@ -262,21 +247,20 @@
 							}
 						}
 					%>
-						<tr>
+						<tr class="tab_tr">
 							<td align="left" height="22" class="InputTip" colspan="12">
 								<%=pagegetRoll%>
 							</td>
 						</tr>
-					</table>
-				</FORM>
-				<table>
-					<tr>
-						<td>
-							<input type="button" onclick="tj();" value="返 回"
-								class="button_bg">
+						
+						<tr class="tab_result">
+						<td align="center" colspan="12">
+							<input type="button" onclick="tj();" value="返 回"	class="button_bg">
 						</td>
 					</tr>
-				</table>
+						
+					</table>
+				</FORM>
 			</DIV>
 		</center>
 	</body>
