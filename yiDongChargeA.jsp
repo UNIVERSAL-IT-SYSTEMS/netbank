@@ -19,7 +19,7 @@
 	String content = "biz_id,32|biz_step_id,3|TXNSRC,WE441|ActNo,"+cdno;
 	log.Write(">>>>解约查询界面yiDongChargeA.jsp>>>>>>>>>>发出的content报文为：" +content);
 			
-    String cssFileName = request.getParameter("cssFileName");//获取客户当前使用的CSS样式
+  String cssFileName = request.getParameter("cssFileName");//获取客户当前使用的CSS样式
 	if(cssFileName ==null){
 		cssFileName = "skin.css";
 	}		
@@ -42,7 +42,7 @@
 				window.location="/personbank/HttpProxy?URL=/midserv/midservError.jsp&dse_sessionId=<%=dse_sessionId%>";
 			</script>
 <%
-				return;	
+		  return;	
 	}
 	
 	log.Write("<<<<<<<<<<<<<解约查询返回报文_bwResult:"+bwResult);

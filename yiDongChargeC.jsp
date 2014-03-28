@@ -53,7 +53,7 @@
 	
 	
 
-    String cssFileName = request.getParameter("cssFileName");//获取客户当前使用的CSS样式
+  String cssFileName = request.getParameter("cssFileName");//获取客户当前使用的CSS样式
 	if(cssFileName ==null){
 		cssFileName = "skin.css";
 	}					
@@ -61,8 +61,8 @@
 	String bocomPwd = MessManTool.changeChar(request.getParameter("bocomPwd"));//加密密码
 	if(bocomPwd.equals("")){
 		System.out.println("交易密码为空");
-			AppParam.setParam(dse_sessionId+"midErr1","参数错误");
-			AppParam.setParam(dse_sessionId+"midErr2","交易密码为空");
+	  AppParam.setParam(dse_sessionId+"midErr1","参数错误");
+		AppParam.setParam(dse_sessionId+"midErr2","交易密码为空");
 
 
 %>
@@ -97,10 +97,10 @@
 	window.location="/personbank/HttpProxy?URL=/midserv/midservError.jsp&dse_sessionId=<%=dse_sessionId%>";
 </script>
 <%
-	return;
+	    return;
 	}
 	String tmp ="";
-    tmp = bwResult.getContext();
+  tmp = bwResult.getContext();
 	log.Write("bwResult.getContext= "+tmp);
 	
 	String info=MessManTool.getValueByName(tmp,"MGID");
@@ -117,7 +117,7 @@
 	window.location="/personbank/HttpProxy?URL=/midserv/midservError.jsp&dse_sessionId=<%=dse_sessionId%>";
 </script>
 <%
-	return;
+	    return;
 	}
 %>
 

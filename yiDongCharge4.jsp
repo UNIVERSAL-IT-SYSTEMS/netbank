@@ -28,7 +28,7 @@
 	
 	
 
-    String cssFileName = request.getParameter("cssFileName");//获取客户当前使用的CSS样式
+  String cssFileName = request.getParameter("cssFileName");//获取客户当前使用的CSS样式
 	if(cssFileName ==null){
 		cssFileName = "skin.css";
 	}					
@@ -105,10 +105,10 @@
 	window.location="/personbank/HttpProxy?URL=/midserv/midservError.jsp&dse_sessionId=<%=dse_sessionId%>";
 </script>
 <%
-	return;
+	    return;
 	}
 	String tmp ="";
-    tmp = bwResult.getContext();
+  tmp = bwResult.getContext();
 	log.Write("bwResult.getContext= "+tmp);
 	String info=MessManTool.getValueByName(tmp,"MGID");
 	
@@ -124,7 +124,7 @@
 	window.location="/personbank/HttpProxy?URL=/midserv/midservError.jsp&dse_sessionId=<%=dse_sessionId%>";
 </script>
 <%
-	return;
+	    return;
 	}
 %>
 

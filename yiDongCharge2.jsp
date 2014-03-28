@@ -33,7 +33,7 @@
 	
 	log.Write(">>>>移动签约查询界面yiDongCharge2.jsp>>>>>>>>>>发出的content报文为：" +content);
 			
-    String cssFileName = request.getParameter("cssFileName");//获取客户当前使用的CSS样式
+  String cssFileName = request.getParameter("cssFileName");//获取客户当前使用的CSS样式
 	if(cssFileName ==null){
 		cssFileName = "skin.css";
 	}		

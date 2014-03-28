@@ -14,11 +14,6 @@
 		System.out.println("交易密码为空");
 			AppParam.setParam(dse_sessionId+"midErr1","参数错误");
 			AppParam.setParam(dse_sessionId+"midErr2","交易密码为空");
-	String cssFileName = request.getParameter("cssFileName");//获取客户当前使用的CSS样式
-	if(cssFileName ==null){
-		cssFileName = "skin.css";
-	}		
-			
 %>
 <script type="text/javascript">
 	window.location="/personbank/HttpProxy?URL=/midserv/midservError.jsp&dse_sessionId=<%=dse_sessionId%>";
@@ -26,6 +21,11 @@
 <%
 		return;
 	}
+	String cssFileName = request.getParameter("cssFileName");//获取客户当前使用的CSS样式
+	if(cssFileName ==null){
+		cssFileName = "skin.css";
+	}		
+			
 	String biz_id = MessManTool.changeChar(request.getParameter("biz_id"));
 	if (biz_id.equals("")) {
 		System.out.println("传入参数不正确");

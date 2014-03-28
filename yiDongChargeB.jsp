@@ -41,7 +41,7 @@
 
 	
 	
-    String cssFileName = request.getParameter("cssFileName");//获取客户当前使用的CSS样式
+  String cssFileName = request.getParameter("cssFileName");//获取客户当前使用的CSS样式
 	if(cssFileName ==null){
 		cssFileName = "skin.css";
 	}		
