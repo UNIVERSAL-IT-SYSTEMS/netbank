@@ -91,14 +91,14 @@
     <extension>zip</extension>
     <mime-type>application/zip</mime-type>
   </mime-mapping>
-  <mime-mapping>
+  <!--mime-mapping>
     <extension>class</extension>
     <mime-type>application/x-java-vm</mime-type>
   </mime-mapping>
   <mime-mapping>
     <extension>jar</extension>
     <mime-type>application/x-java-archive</mime-type>
-  </mime-mapping>
+  </mime-mapping-->
   <mime-mapping>
     <extension>ser</extension>
     <mime-type>application/x-java-serialized</mime-type>

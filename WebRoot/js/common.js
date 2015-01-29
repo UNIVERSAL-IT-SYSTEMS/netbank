@@ -17,15 +17,11 @@ function tj() {
 	document.forms[0].submit();
 }
 String.prototype.Trim = function () {
-	var m = this.match(/^\s*(\S+(\s+\S+)*)\s*/);
+	var m = this.match(/^\s*(\S+(\s+\S+)*)\s*/); 
 	return (m == null) ? "" : m[1];
 };
 String.prototype.isMobile = function () {
-	 if(/^13\d{9}$/g.test(this.Trim())||(/^15[0-35-9]\d{8}$/g.test(this.Trim())) ||  (/^18[05-9]\d{8}$/g.test(this.Trim()))){        
-             return true;      
-     }else{      
-            return false;      
-     }     
+	return (/^(?:13\d|15[89])-?\d{5}(\d{3}|\*{3})$/.test(this.Trim()));
 };
 String.prototype.isTel = function () {
 //return (/^(([0+]d{2,3}-)?(0d{2,3})-)?(d{7,8})(-(d{3,}))?/.test(this.Trim()));

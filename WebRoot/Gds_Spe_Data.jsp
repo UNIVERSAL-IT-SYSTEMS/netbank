@@ -46,12 +46,11 @@
     String signResult = request.getParameter("Gds_signResult");
     String Gds_GdsBIds = request.getParameter("Gds_GdsBIds");
 
-    //设置注册版手机银行字段,本来需要对网银类型进行区分，但文档并没有特别要求，而且
-    //天讯缴费等交易也对区分进行了屏蔽
+    //卡部要求对网银用户类型进行区分
     String loginType = request.getParameter("loginType");
 %>
     <!-- 发送手机动态密码字段 -->
-    <input type="hidden" name="sendPass" value="1"/>
+    <input type="hidden" name="sendPass" value="<%=loginType.endsWith("0")?"1":"0" %>"> 
 
     <!-- 特色业务字段 -->
     <input type="hidden" name="Gds_signResult" value="<%=signResult%>"/>

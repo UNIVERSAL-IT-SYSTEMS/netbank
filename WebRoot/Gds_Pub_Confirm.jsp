@@ -21,6 +21,8 @@
 	String cardNo = request.getParameter("cardNo");
 	//获取卡号
 	String custName = request.getParameter("custName");
+	//获取用户类型
+ 	String loginType = request.getParameter("loginType");//传送登陆类别 0－注册用户(手机版) 1－证书用户 2－大众用户
 	
 	//创建日志实例
     GzLog log = new GzLog("c:/gzLog");
@@ -31,10 +33,13 @@
     if(!("0".equals(sendPass)||"1".equals(sendPass))){
         response.sendRedirect("Gds_Pub_Agree.jsp");
     }
-    String dynamicCode = request.getParameter("dynamicCode");
-    String dynamicCodeSeq = request.getParameter("dynamicCodeSeq");
-    log.Write( "sendPass=["+sendPass+"] 动态密码=["+dynamicCode+"] 动态密码序号=["+dynamicCodeSeq+"]" );
-
+    String dynamicCode = "";
+    String dynamicCodeSeq = "";
+  	if(loginType.equals("0")){
+	    dynamicCode = request.getParameter("dynamicCode");
+	    dynamicCodeSeq = request.getParameter("dynamicCodeSeq");
+	    log.Write( "sendPass=["+sendPass+"] 动态密码=["+dynamicCode+"] 动态密码序号=["+dynamicCodeSeq+"]" );
+		}
 %>
 
 <html>
@@ -54,12 +59,17 @@
 	                    alert("请输入合法的密码");
 	                    return;
 	                }
+<%
+  	if(loginType.equals("0")){
+%>
 	                if(document.form1.DynamicCode.value
 	                        !='<%=request.getParameter("dynamicCode")%>'){
 	                    alert('动态密码不符');
 	                    return false;
 	                }
-
+<%
+		}
+%>
 	                document.safeInput1.commit("safeCommit1");
 	                document.safeCommit1.submit("form1"); 
 	                clickBoolean=false;
@@ -223,6 +233,9 @@
 <SCRIPT language=JavaScript> writePwdActivxObjectLenClass('safeInput1','safeInput1','','password',20,6,'20','153')</SCRIPT>
         </td>
       </tr>
+<%
+  	if(loginType.equals("0")){
+%>
       <tr class="tab_tr"> 
         <td align="right">
             请输入手机动态密码：
@@ -231,6 +244,9 @@
             <input type="text" name="DynamicCode">序号：（<%=dynamicCodeSeq %>）
         </td>
       </tr>
+<%
+		}
+%>
       <tr class="tab_result"> 
         <td align="right">
             <input type="button" class="button_bg" onclick="javascript:beforeSubmit();" value="提交" style={cursor:hand;}>

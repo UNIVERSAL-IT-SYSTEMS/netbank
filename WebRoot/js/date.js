@@ -171,9 +171,7 @@ function getValue(obj,inputObj)  //把选择的日期传给输入框
     obj.parentNode.parentNode.parentNode.cells[i].className='';
   obj.className='ds_border2';
 }
-function document.onclick()
-{
-}
+
 function closeLayer()
 {
 	
